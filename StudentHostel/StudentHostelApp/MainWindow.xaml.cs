@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using StudentHostelApp.View;
 
 namespace StudentHostelApp
 {
@@ -23,6 +24,13 @@ namespace StudentHostelApp
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StudentListView view = new StudentListView();
+            view.Show();
+            this.Close();
         }
     }
 }

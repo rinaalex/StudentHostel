@@ -62,6 +62,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Migrations\201901221603054_UpdatedGroups.cs" />
+    <Compile Include="Migrations\201901221603054_UpdatedGroups.Designer.cs">
+      <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\StudentListDto.cs" />
+    <Compile Include="ViewModel\StudentListViewModel.cs" />
+    <Compile Include="View\StudentListView.xaml.cs">
+      <DependentUpon>StudentListView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\StudentListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\201901190944522_inital.cs" />
@@ -113,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901191051580_updateStudentGroupRelationshipsAgain.resx">
       <DependentUpon>201901191051580_updateStudentGroupRelationshipsAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901221603054_UpdatedGroups.resx">
+      <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,19 +1,16 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-
-namespace StudentHostelApp.Model
+namespace StudentHostelApp.ViewModel
 {
     /// <summary>
-    /// Таблица Студенты
+    /// Предоставляет информацию о студенте для отображения
     /// </summary>
-    public class Student
+    public class StudentListDto
     {
         public int StudentId { get; set; }
         public string Name { get; set; }
-        [StringLength(11)]
         public string Phone { get; set; }
         public string Description { get; set; }
-        public virtual Group Group { get; set; }
+        public string GroupName { get; set; }
     }
 }

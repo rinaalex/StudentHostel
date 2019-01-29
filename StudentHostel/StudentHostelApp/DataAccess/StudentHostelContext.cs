@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using StudentHostelApp.Model;
 
+
 namespace StudentHostelApp.DataAccess
 {
     public class StudentHostelContext: DbContext
@@ -12,6 +13,7 @@ namespace StudentHostelApp.DataAccess
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
