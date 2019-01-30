@@ -67,8 +67,10 @@
     <Compile Include="Migrations\201901221603054_UpdatedGroups.Designer.cs">
       <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\StudentListDto.cs" />
+    <Compile Include="ViewModel\GroupListViewModel.cs" />
+    <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\StudentListViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="View\StudentListView.xaml.cs">
       <DependentUpon>StudentListView.xaml</DependentUpon>
     </Compile>

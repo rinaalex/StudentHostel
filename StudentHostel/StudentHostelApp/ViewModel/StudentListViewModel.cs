@@ -17,13 +17,13 @@ namespace StudentHostelApp.ViewModel
     {
         StudentHostelContext context = new StudentHostelContext();
 
-        public ObservableCollection<StudentListDto> studentList;
-        public ObservableCollection<StudentListDto> StudentList { get; private set; }
+        public ObservableCollection<StudentViewModel> studentList;
+        public ObservableCollection<StudentViewModel> StudentList { get; private set; }
         public ObservableCollection<Group> GroupList { get; set; }
 
         // Текущий объект из коллекции
-        private StudentListDto currentStudent;
-        public StudentListDto CurrentStudent
+        private StudentViewModel currentStudent;
+        public StudentViewModel CurrentStudent
         {
             get
             {
@@ -83,12 +83,12 @@ namespace StudentHostelApp.ViewModel
                 p.Group.GroupName
             });
 
-            StudentList = new ObservableCollection<StudentListDto>();
+            StudentList = new ObservableCollection<StudentViewModel>();
 
             // Формирование списка для отображения
             foreach (var student in students)
             {
-                StudentList.Add(new StudentListDto
+                StudentList.Add(new StudentViewModel
                 {
                     StudentId = student.StudentId,
                     Name = student.Name,
@@ -185,9 +185,9 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет переход в режим добавления нового объекта, втавляет новый объект в коллекцию
         /// </summary>
-        public void Add()
+        protected void Add()
         {
-            StudentListDto newStudent = new StudentListDto
+            StudentViewModel newStudent = new StudentViewModel
             {
                 StudentId = 0
             };
@@ -198,16 +198,16 @@ namespace StudentHostelApp.ViewModel
         }
 
         //копия исходного значения текущего объекта
-        private StudentListDto oldStudent;
+        private StudentViewModel oldStudent;
 
         /// <summary>
         /// Выполняет перевод в режим редактирования текущего объекта
         /// </summary>
-        public void Edit()
+        protected void Edit()
         {
             if (CurrentStudent != null)
             {
-                oldStudent = new StudentListDto();
+                oldStudent = new StudentViewModel();
                 oldStudent.StudentId = CurrentStudent.StudentId;
                 oldStudent.Name = CurrentStudent.Name;
                 oldStudent.Description = CurrentStudent.Description;
@@ -222,46 +222,76 @@ namespace StudentHostelApp.ViewModel
         }
 
         /// <summary>
+        /// Выполняет проверку корректности значений полей объекта
+        /// </summary>
+        /// <param name="student">Проверяемый объект</param>
+        /// <returns></returns>
+        private bool Validate(StudentViewModel student)
+        {
+            if (String.IsNullOrWhiteSpace(student.Name))
+            {
+                ErrorMessage = "Поле ФИО не может быть пустым!";
+                return false;
+            }
+            if (String.IsNullOrWhiteSpace(student.Phone))
+            {
+                ErrorMessage = "Поле Телефон не может быть пустым!";
+                return false;
+            }
+            if (String.IsNullOrWhiteSpace(student.GroupName))
+            {
+                ErrorMessage = "Поле Учебная группа не может быть пустым!";
+                return false;
+            }
+
+            ErrorMessage = String.Empty;
+            return true;
+        }
+
+        /// <summary>
         /// Сохраняет изменения в текущем объекте при его добавлении или редактировании
         /// </summary>
-        public void SaveChanges()
+        protected void SaveChanges()
         {
-            // Создание объекта для добавления в контекст данных
-            Student student = new Student
+            if (Validate(CurrentStudent))
             {
-                StudentId = CurrentStudent.StudentId,
-                Name = CurrentStudent.Name,
-                Phone = CurrentStudent.Phone,
-                Description = CurrentStudent.Description,
-                Group = context.Groups.Where(p => p.GroupName == CurrentStudent.GroupName).Single()
-            };
+                // Создание объекта для добавления в контекст данных
+                Student student = new Student
+                {
+                    StudentId = CurrentStudent.StudentId,
+                    Name = CurrentStudent.Name,
+                    Phone = CurrentStudent.Phone,
+                    Description = CurrentStudent.Description,
+                    Group = context.Groups.Where(p => p.GroupName == CurrentStudent.GroupName).Single()
+                };
 
-            // Сохранение нового объекта
-            if (student.StudentId==0)
-            {                
-                context.Students.Add(student);
-                context.SaveChanges();                
-                CurrentStudent.StudentId = context.Students.OrderByDescending(p => p.StudentId).FirstOrDefault().StudentId;
-                OnPropertyChanged(nameof(CurrentStudent));
-                IsAdding = false;
-            }
-            // Сохранение изменений в существующум объекте
-            else
-            {                
-                var result = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).FirstOrDefault();
-                result.Name = student.Name;
-                result.Phone = student.Phone;
-                result.Description = student.Description;
-                result.Group = student.Group;
-                context.SaveChanges();
-                IsEditing = false;
+                // Сохранение нового объекта
+                if (student.StudentId == 0)
+                {
+                    context.Students.Add(student);
+                    context.SaveChanges();
+                    CurrentStudent.StudentId = context.Students.OrderByDescending(p => p.StudentId).FirstOrDefault().StudentId;
+                    OnPropertyChanged(nameof(CurrentStudent));
+                    IsAdding = false;
+                }
+                // Сохранение изменений в существующум объекте
+                else
+                {
+                    var result = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).FirstOrDefault();
+                    result.Name = student.Name;
+                    result.Phone = student.Phone;
+                    result.Description = student.Description;
+                    result.Group = student.Group;
+                    context.SaveChanges();
+                    IsEditing = false;
+                }
             }
         }
 
         /// <summary>
         /// Удаляет текущий объект из коллекции
         /// </summary>
-        public void DeleteStudent()
+        protected void DeleteStudent()
         {
             if (CurrentStudent != null)
             {
@@ -288,7 +318,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет отмену изменений в текущем объекте
         /// </summary>
-        public void DiscardChanges()
+        protected void DiscardChanges()
         {
             // Отмена режима добавления
             if (IsAdding)

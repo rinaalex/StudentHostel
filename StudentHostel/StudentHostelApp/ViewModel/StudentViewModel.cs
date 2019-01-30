@@ -5,7 +5,7 @@ namespace StudentHostelApp.ViewModel
     /// <summary>
     /// Предоставляет информацию о студенте для отображения
     /// </summary>
-    public class StudentListDto
+    public class StudentViewModel
     {
         public int StudentId { get; set; }
         public string Name { get; set; }
