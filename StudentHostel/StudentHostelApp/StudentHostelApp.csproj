@@ -71,6 +71,16 @@
     <Compile Include="Migrations\201901301431387_RequiredFieldsUpdated.Designer.cs">
       <DependentUpon>201901301431387_RequiredFieldsUpdated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901301527546_RoomsAndAccomodationsAdded.cs" />
+    <Compile Include="Migrations\201901301527546_RoomsAndAccomodationsAdded.Designer.cs">
+      <DependentUpon>201901301527546_RoomsAndAccomodationsAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901301536078_RoomsAndAccomodationsAdded_.cs" />
+    <Compile Include="Migrations\201901301536078_RoomsAndAccomodationsAdded_.Designer.cs">
+      <DependentUpon>201901301536078_RoomsAndAccomodationsAdded_.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Accomodation.cs" />
+    <Compile Include="Model\Room.cs" />
     <Compile Include="ViewModel\GroupListViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\StudentListViewModel.cs" />
@@ -139,6 +149,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901301431387_RequiredFieldsUpdated.resx">
       <DependentUpon>201901301431387_RequiredFieldsUpdated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901301527546_RoomsAndAccomodationsAdded.resx">
+      <DependentUpon>201901301527546_RoomsAndAccomodationsAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901301536078_RoomsAndAccomodationsAdded_.resx">
+      <DependentUpon>201901301536078_RoomsAndAccomodationsAdded_.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -21,6 +21,9 @@ namespace StudentHostelApp.DataAccess
                 HasRequired<Group>(p => p.Group).
                 WithMany(q => q.Students).
                 WillCascadeOnDelete(true);
+            //modelBuilder.Entity<Accomodation>().
+            //    HasMany<Student>
+               
         }
     }
 }
