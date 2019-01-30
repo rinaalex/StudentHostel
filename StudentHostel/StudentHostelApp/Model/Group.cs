@@ -10,6 +10,7 @@ namespace StudentHostelApp.Model
     public class Group
     {
         public int GroupId { get; set; }
+        [Required]
         [MaxLength(10)]
         public string GroupName { get; set; }
 

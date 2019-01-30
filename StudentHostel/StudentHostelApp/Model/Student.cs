@@ -10,7 +10,9 @@ namespace StudentHostelApp.Model
     public class Student
     {
         public int StudentId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         [StringLength(11)]
         public string Phone { get; set; }
         public string Description { get; set; }

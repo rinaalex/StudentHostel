@@ -67,6 +67,10 @@
     <Compile Include="Migrations\201901221603054_UpdatedGroups.Designer.cs">
       <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901301431387_RequiredFieldsUpdated.cs" />
+    <Compile Include="Migrations\201901301431387_RequiredFieldsUpdated.Designer.cs">
+      <DependentUpon>201901301431387_RequiredFieldsUpdated.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\GroupListViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\StudentListViewModel.cs" />
@@ -132,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901221603054_UpdatedGroups.resx">
       <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901301431387_RequiredFieldsUpdated.resx">
+      <DependentUpon>201901301431387_RequiredFieldsUpdated.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
