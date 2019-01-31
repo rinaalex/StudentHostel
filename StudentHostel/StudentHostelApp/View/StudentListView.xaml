@@ -12,8 +12,8 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="dataGrid" Grid.Row="0" AutoGenerateColumns="False" ColumnWidth="*"
-                  ItemsSource="{Binding StudentList, Mode=OneWay}" 
+        <DataGrid x:Name="dataGrid" Grid.Row="0" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True"
+                  ItemsSource="{Binding StudentList, Mode=OneWay}" IsEnabled="{Binding IsBrowsing}"
                   SelectedItem="{Binding CurrentStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>

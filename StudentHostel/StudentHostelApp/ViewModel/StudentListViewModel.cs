@@ -237,6 +237,11 @@ namespace StudentHostelApp.ViewModel
                 ErrorMessage = "Поле Телефон не может быть пустым!";
                 return false;
             }
+            if (student.Phone.Length>11)
+            {
+                ErrorMessage = "Поле Телефон не может содержать более 11 символов!";
+                return false;
+            }
             if (String.IsNullOrWhiteSpace(student.GroupName))
             {
                 ErrorMessage = "Поле Учебная группа не может быть пустым!";
@@ -308,7 +313,7 @@ namespace StudentHostelApp.ViewModel
                 context.Entry(newStudent).State = EntityState.Deleted;
                 StudentList.Remove(CurrentStudent);
                 context.SaveChanges();
-                ErrorMessage = String.Empty;
+                ErrorMessage = string.Empty;
             }
             else
                 ErrorMessage = "Не выбран объект для удаления.";
