@@ -8,6 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button Content="Студенты" HorizontalAlignment="Left" Height="29" Margin="77,97,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click"/>
+        <Button Content="Учебные группы" HorizontalAlignment="Left" Margin="77,166,0,0" VerticalAlignment="Top" Width="153" Height="29" Click="Button_Click_1"/>
 
     </Grid>
 </Window>

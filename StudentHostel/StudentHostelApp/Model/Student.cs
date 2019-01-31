@@ -17,6 +17,7 @@ namespace StudentHostelApp.Model
         [StringLength(11)]
         public string Phone { get; set; }
         public string Description { get; set; }
+        [Required]
         public virtual Group Group { get; set; }
 
         public virtual ICollection<Accomodation> RoomsLink { get; set; }

@@ -17,9 +17,8 @@ namespace StudentHostelApp.ViewModel
     {
         StudentHostelContext context = new StudentHostelContext();
 
-        public ObservableCollection<StudentViewModel> studentList;
         public ObservableCollection<StudentViewModel> StudentList { get; private set; }
-        public ObservableCollection<Group> GroupList { get; set; }
+        public ObservableCollection<Group> GroupList { get; private set; }
 
         // Текущий объект из коллекции
         private StudentViewModel currentStudent;
@@ -69,7 +68,7 @@ namespace StudentHostelApp.ViewModel
         }
 
         /// <summary>
-        /// Загружает список студентов для отображения
+        /// Загружает список студентов для отображения и редактирования
         /// </summary>
         public void GetData()
         {
@@ -215,7 +214,7 @@ namespace StudentHostelApp.ViewModel
                 oldStudent.GroupName = CurrentStudent.GroupName;
 
                 IsEditing = true;
-                ErrorMessage = String.Empty;
+                ErrorMessage = string.Empty;
             }
             else
                 ErrorMessage = "Не выбран объект для редактирования.";

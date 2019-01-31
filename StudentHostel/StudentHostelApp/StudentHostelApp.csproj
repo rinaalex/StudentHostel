@@ -79,12 +79,20 @@
     <Compile Include="Migrations\201901301536078_RoomsAndAccomodationsAdded_.Designer.cs">
       <DependentUpon>201901301536078_RoomsAndAccomodationsAdded_.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901310750427_GroupClassUpdated.cs" />
+    <Compile Include="Migrations\201901310750427_GroupClassUpdated.Designer.cs">
+      <DependentUpon>201901310750427_GroupClassUpdated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Accomodation.cs" />
     <Compile Include="Model\Room.cs" />
     <Compile Include="ViewModel\GroupListViewModel.cs" />
+    <Compile Include="ViewModel\GroupViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\StudentListViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="View\GroupListView.xaml.cs">
+      <DependentUpon>GroupListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StudentListView.xaml.cs">
       <DependentUpon>StudentListView.xaml</DependentUpon>
     </Compile>
@@ -101,6 +109,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\GroupListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\StudentListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -155,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901301536078_RoomsAndAccomodationsAdded_.resx">
       <DependentUpon>201901301536078_RoomsAndAccomodationsAdded_.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901310750427_GroupClassUpdated.resx">
+      <DependentUpon>201901310750427_GroupClassUpdated.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
