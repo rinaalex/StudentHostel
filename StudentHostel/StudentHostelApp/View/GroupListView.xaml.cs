@@ -34,5 +34,11 @@ namespace StudentHostelApp.View
             if (MessageBox.Show("Вы действительно хотите удалить выбранную группу?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 viewModel.DeleteCommand.Execute("");
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //костыль для обновления значения в ячейке после отмены изменений
+            dataGrid.Items.Refresh();
+        }
     }
 }
