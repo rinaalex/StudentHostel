@@ -72,49 +72,31 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         public void GetData()
         {
-            // Загрузка необходимых для отображения данных из контекста
-            var students = context.Students.Select(p => new
+            //Загрузка необходимых для отображения данных из контекста   
+            var students = context.Students.Select(p => new StudentViewModel
             {
-                p.StudentId,
-                p.Name,
-                p.Phone,
-                p.Description,
-                p.Group.GroupName
-            });
+                StudentId = p.StudentId,
+                Name = p.Name,
+                Phone = p.Phone,
+                Description = p.Description,
+                GroupName = p.Group.GroupName,
+                RoomNo = p.RoomsLink.Select(q => q.Room.RoomNumber).FirstOrDefault().ToString()
+            }).ToList();
 
-            StudentList = new ObservableCollection<StudentViewModel>();
-
-            // Формирование списка для отображения
-            foreach (var student in students)
-            {
-                StudentList.Add(new StudentViewModel
-                {
-                    StudentId = student.StudentId,
-                    Name = student.Name,
-                    Phone = student.Phone,
-                    Description = student.Description,
-                    GroupName = student.GroupName
-                });
-            }
+            StudentList = new ObservableCollection<StudentViewModel>(students);
 
             // Загрузка из контекста необходимых для отображения данных
-            var groups = context.Groups.Select(p => new
+            var groups = context.Groups.Select(p => new 
             {
-                p.GroupId,
-                p.GroupName
-            });
-
-            GroupList = new ObservableCollection<Group>();
-
-            // Формирование списка для отображения
-            foreach (var group in groups)
+                GroupId = p.GroupId,
+                GroupName = p.GroupName
+            }).ToList().Select(c=>new Group
             {
-                GroupList.Add(new Group
-                {
-                    GroupId = group.GroupId,
-                    GroupName = group.GroupName
-                });
-            }
+                GroupId=c.GroupId,
+                GroupName=c.GroupName
+            }).ToList();
+
+            GroupList = new ObservableCollection<Group>(groups);
         }
 
         #region Свойства для управления режимами работы с коллекцией

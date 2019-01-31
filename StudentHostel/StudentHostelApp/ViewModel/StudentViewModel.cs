@@ -12,5 +12,6 @@ namespace StudentHostelApp.ViewModel
         public string Phone { get; set; }
         public string Description { get; set; }
         public string GroupName { get; set; }
+        public string RoomNo { get; set; }
     }
 }

@@ -20,6 +20,7 @@
                 <DataGridTextColumn Header="Телефон" Binding="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Комментарий" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Учебная группа" Binding="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Учебная группа" Binding="{Binding RoomNo, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 

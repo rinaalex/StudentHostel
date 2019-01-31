@@ -63,24 +63,19 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         public void GetData()
         {
+            // Загрузка из контекста необходимых для отображения данных
             var groups = context.Groups.Select(p => new
             {
-                p.GroupId,
-                p.GroupName
-                //p.Students
-            });
-
-            GroupList = new ObservableCollection<Group>();
-
-            foreach (var group in groups)
+                GroupId = p.GroupId,
+                GroupName = p.GroupName
+            }).ToList().Select(c => new Group
             {
-                GroupList.Add(new Group
-                {
-                    GroupId = group.GroupId,
-                    GroupName = group.GroupName
-                   // Students = group.Students
-                });
-            }
+                GroupId = c.GroupId,
+                GroupName = c.GroupName
+            }).ToList();
+
+            GroupList = new ObservableCollection<Group>(groups);
+           
         }
 
         #region Свойства для управления режимами работы с коллекцией
@@ -169,7 +164,7 @@ namespace StudentHostelApp.ViewModel
                 oldGroup = new Group();
                 oldGroup.GroupId = CurrentGroup.GroupId;
                 oldGroup.GroupName = CurrentGroup.GroupName;
-                oldGroup.Students = CurrentGroup.Students;
+                //oldGroup.Students = CurrentGroup.Students;
                 ErrorMessage = string.Empty;
             }
             else
@@ -219,7 +214,7 @@ namespace StudentHostelApp.ViewModel
                 // Сохранение изменений в текущем объекте
                 else
                 {
-                    var result = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
+                    var result = context.Groups.Where(p => p.GroupId == oldGroup.GroupId).FirstOrDefault();
                     result.GroupName = CurrentGroup.GroupName;
                     context.SaveChanges();
                     OnPropertyChanged(nameof(CurrentGroup));
