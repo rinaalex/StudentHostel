@@ -89,7 +89,7 @@
     <Compile Include="ViewModel\GroupViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="ViewModel\StudentListViewModel.cs" />
-    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BaseCrudViewModel.cs" />
     <Compile Include="View\GroupListView.xaml.cs">
       <DependentUpon>GroupListView.xaml</DependentUpon>
     </Compile>

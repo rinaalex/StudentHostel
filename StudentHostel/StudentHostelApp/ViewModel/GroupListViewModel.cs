@@ -10,10 +10,8 @@ namespace StudentHostelApp.ViewModel
     /// <summary>
     /// Предоставляет доступ к коллекции групп для отображения и редактирования
     /// </summary>
-    public class GroupListViewModel:INotifyPropertyChanged
+    public class GroupListViewModel:BaseCrudViewModel
     {
-        private StudentHostelContext context = new StudentHostelContext();
-
         public ObservableCollection<Group> GroupList { get; private set; }
 
         private Group currentGroup;
@@ -29,13 +27,6 @@ namespace StudentHostelApp.ViewModel
                 OnPropertyChanged(nameof(CurrentGroup));
             }
         }
-
-        // Команды для взаимодействия с коллекцией объектов
-        public Command AddCommand { get; private set; }
-        public Command EditCommand { get; private set; }
-        public Command SaveCommand { get; private set; }
-        public Command DeleteCommand { get; private set; }
-        public Command CancelCommand { get; private set; }
 
         // Конструктор модели представления
         public GroupListViewModel()
@@ -61,13 +52,13 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Загружает список групп для отображения и редактриования
         /// </summary>
-        public void GetData()
+        public override void GetData()
         {
             // Загрузка из контекста необходимых для отображения данных
             var groups = context.Groups.Select(p => new
             {
-                GroupId = p.GroupId,
-                GroupName = p.GroupName
+                p.GroupId,
+                p.GroupName
             }).ToList().Select(c => new Group
             {
                 GroupId = c.GroupId,
@@ -76,75 +67,13 @@ namespace StudentHostelApp.ViewModel
 
             GroupList = new ObservableCollection<Group>(groups);
            
-        }
-
-        #region Свойства для управления режимами работы с коллекцией
-        private bool isAdding;
-        public bool IsAdding
-        {
-            get { return this.isAdding; }
-            set
-            {
-                this.isAdding = value;
-                OnPropertyChanged(nameof(IsAdding));
-                OnPropertyChanged(nameof(IsAddingOrEditing));
-                OnPropertyChanged(nameof(IsBrowsing));
-            }
-        }
-
-        private bool isEditing;
-        public bool IsEditing
-        {
-            get
-            {
-                return this.isEditing;
-            }
-            set
-            {
-                this.isEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-                OnPropertyChanged(nameof(IsAddingOrEditing));
-                OnPropertyChanged(nameof(IsBrowsing));
-            }
-        }
-
-        public bool IsAddingOrEditing
-        {
-            get
-            {
-                return IsAdding || IsEditing;
-            }
-        }
-
-        public bool IsBrowsing
-        {
-            get
-            {
-                return !(IsAdding || IsEditing);
-            }
-        }
-
-        //последнее сообщение об ошибке
-        private string errorMessage;
-        public string ErrorMessage
-        {
-            get
-            {
-                return this.errorMessage;
-            }
-            set
-            {
-                this.errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
-        }
-        #endregion
+        }        
 
         #region Свойства и методы для редактирвания коллекции
         /// <summary>
         /// Выполняет переход в режим добавления нового объекта
         /// </summary>
-        protected void Add()
+        protected override void Add()
         {
             GroupList.Add(new Group { GroupId = 0 });
             CurrentGroup = GroupList.Last();
@@ -156,7 +85,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет переход в режим редактирования текущего объекта
         /// </summary>
-        protected void Edit()
+        protected override void Edit()
         {
             if (CurrentGroup != null)
             {
@@ -198,7 +127,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет сохранение изменений в коллекции
         /// </summary>
-        protected void SaveChanges()
+        protected override void SaveChanges()
         {
             if (Validate(CurrentGroup))
             {
@@ -226,7 +155,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет удаление текущего объекта из коллекции
         /// </summary>
-        protected void Delete()
+        protected override void Delete()
         {
             if (CurrentGroup != null)
             {
@@ -243,7 +172,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет выход из режима добавления или редактирования
         /// </summary>
-        protected void DiscardChanges()
+        protected override void DiscardChanges()
         {
             if (IsAdding)
             {
@@ -258,16 +187,6 @@ namespace StudentHostelApp.ViewModel
             }
             ErrorMessage = string.Empty;
         }
-        #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string property)
-        {
-            if (PropertyChanged!=null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
-        }
-        
+        #endregion       
     }
 }

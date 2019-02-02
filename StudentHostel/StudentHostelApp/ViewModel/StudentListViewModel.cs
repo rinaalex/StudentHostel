@@ -13,10 +13,8 @@ namespace StudentHostelApp.ViewModel
     /// <summary>
     /// Предоставляет возможности для работы с таблицей Студенты
     /// </summary>
-    public class StudentListViewModel : INotifyPropertyChanged
+    public class StudentListViewModel : BaseCrudViewModel
     {
-        StudentHostelContext context = new StudentHostelContext();
-
         public ObservableCollection<StudentViewModel> StudentList { get; private set; }
         public ObservableCollection<Group> GroupList { get; private set; }
 
@@ -42,13 +40,6 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
-        // Команды для взаимодействия с коллекцией объектов
-        public Command AddCommand { get; private set; }
-        public Command EditCommand { get; private set; }
-        public Command SaveCommand { get; private set; }
-        public Command DeleteCommand { get; private set; }
-        public Command CancelCommand { get; private set; }
-
         // Конструктор представления модели
         public StudentListViewModel()
         {
@@ -63,14 +54,14 @@ namespace StudentHostelApp.ViewModel
             AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
             EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing); });
             SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
-            DeleteCommand = new Command(DeleteStudent, () => { return !IsAdding && !IsEditing; });
+            DeleteCommand = new Command(Delete, () => { return !IsAdding && !IsEditing; });
             CancelCommand = new Command(DiscardChanges, () => { return IsAdding || IsEditing; });
         }
 
         /// <summary>
         /// Загружает список студентов для отображения и редактирования
         /// </summary>
-        public void GetData()
+        public override void GetData()
         {
             //Загрузка необходимых для отображения данных из контекста   
             var students = context.Students.Select(p => new StudentViewModel
@@ -88,8 +79,8 @@ namespace StudentHostelApp.ViewModel
             // Загрузка из контекста необходимых для отображения данных
             var groups = context.Groups.Select(p => new 
             {
-                GroupId = p.GroupId,
-                GroupName = p.GroupName
+                p.GroupId,
+                p.GroupName
             }).ToList().Select(c=>new Group
             {
                 GroupId=c.GroupId,
@@ -99,74 +90,11 @@ namespace StudentHostelApp.ViewModel
             GroupList = new ObservableCollection<Group>(groups);
         }
 
-        #region Свойства для управления режимами работы с коллекцией
-        private bool isAdding;
-        public bool IsAdding
-        {
-            get { return this.isAdding; }
-            set
-            {
-                this.isAdding = value;
-                OnPropertyChanged(nameof(IsAdding));
-                OnPropertyChanged(nameof(IsAddingOrEditing));
-                OnPropertyChanged(nameof(IsBrowsing));
-            }
-        }
-
-        private bool isEditing;
-        public bool IsEditing
-        {
-            get
-            {
-                return this.isEditing;
-            }
-            set
-            {
-                this.isEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-                OnPropertyChanged(nameof(IsAddingOrEditing));
-                OnPropertyChanged(nameof(IsBrowsing));
-            }
-        }
-
-        //private bool ;
-        public bool IsAddingOrEditing
-        {
-            get
-            {
-                return IsAdding || IsEditing;
-            }
-        }
-
-        public bool IsBrowsing
-        {
-            get
-            {
-                return !(IsAdding || IsEditing);
-            }
-        }
-
-        //последнее сообщение об ошибке
-        private string errorMessage;
-        public string ErrorMessage
-        {
-            get
-            {
-                return this.errorMessage;
-            }
-            set
-            {
-                this.errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
-        }
-        #endregion
-
         #region Методы, определяющие редактирование коллекции
         /// <summary>
         /// Выполняет переход в режим добавления нового объекта, втавляет новый объект в коллекцию
         /// </summary>
-        protected void Add()
+        protected override void Add()
         {
             StudentViewModel newStudent = new StudentViewModel
             {
@@ -184,7 +112,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет перевод в режим редактирования текущего объекта
         /// </summary>
-        protected void Edit()
+        protected override void Edit()
         {
             if (CurrentStudent != null)
             {
@@ -209,12 +137,12 @@ namespace StudentHostelApp.ViewModel
         /// <returns></returns>
         private bool Validate(StudentViewModel student)
         {
-            if (String.IsNullOrWhiteSpace(student.Name))
+            if (string.IsNullOrWhiteSpace(student.Name))
             {
                 ErrorMessage = "Поле ФИО не может быть пустым!";
                 return false;
             }
-            if (String.IsNullOrWhiteSpace(student.Phone))
+            if (string.IsNullOrWhiteSpace(student.Phone))
             {
                 ErrorMessage = "Поле Телефон не может быть пустым!";
                 return false;
@@ -224,20 +152,20 @@ namespace StudentHostelApp.ViewModel
                 ErrorMessage = "Поле Телефон не может содержать более 11 символов!";
                 return false;
             }
-            if (String.IsNullOrWhiteSpace(student.GroupName))
+            if (string.IsNullOrWhiteSpace(student.GroupName))
             {
                 ErrorMessage = "Поле Учебная группа не может быть пустым!";
                 return false;
             }
 
-            ErrorMessage = String.Empty;
+            ErrorMessage = string.Empty;
             return true;
         }
 
         /// <summary>
         /// Сохраняет изменения в текущем объекте при его добавлении или редактировании
         /// </summary>
-        protected void SaveChanges()
+        protected override void SaveChanges()
         {
             if (Validate(CurrentStudent))
             {
@@ -277,7 +205,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Удаляет текущий объект из коллекции
         /// </summary>
-        protected void DeleteStudent()
+        protected override void Delete()
         {
             if (CurrentStudent != null)
             {
@@ -304,7 +232,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Выполняет отмену изменений в текущем объекте
         /// </summary>
-        protected void DiscardChanges()
+        protected override void DiscardChanges()
         {
             // Отмена режима добавления
             if (IsAdding)
@@ -323,17 +251,8 @@ namespace StudentHostelApp.ViewModel
                 OnPropertyChanged(nameof(CurrentStudent));
                 IsEditing = false;
             }
-            ErrorMessage = String.Empty;
+            ErrorMessage = string.Empty;
         }
         #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string property)
-        {
-            if (PropertyChanged!=null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
-        }
     }
 }
