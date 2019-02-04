@@ -52,7 +52,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Загружает список групп для отображения и редактриования
         /// </summary>
-        public override void GetData()
+        protected override void GetData()
         {
             // Загрузка из контекста необходимых для отображения данных
             var groups = context.Groups.Select(p => new

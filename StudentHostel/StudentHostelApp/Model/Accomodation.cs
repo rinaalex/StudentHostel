@@ -6,7 +6,7 @@ namespace StudentHostelApp.Model
     public class Accomodation
     {
         public int AccomodationId { get; set; }
-        [Required]
+        //[Required]
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         [Required]

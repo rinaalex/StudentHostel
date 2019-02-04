@@ -39,5 +39,12 @@ namespace StudentHostelApp
             groupListView.Show();
             this.Close();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            AccomodationView accomodationView = new AccomodationView();
+            accomodationView.Show();
+            this.Close();
+        }
     }
 }

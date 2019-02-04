@@ -61,7 +61,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Загружает список студентов для отображения и редактирования
         /// </summary>
-        public override void GetData()
+        protected override void GetData()
         {
             //Загрузка необходимых для отображения данных из контекста   
             var students = context.Students.Select(p => new StudentViewModel
@@ -116,12 +116,15 @@ namespace StudentHostelApp.ViewModel
         {
             if (CurrentStudent != null)
             {
-                oldStudent = new StudentViewModel();
-                oldStudent.StudentId = CurrentStudent.StudentId;
-                oldStudent.Name = CurrentStudent.Name;
-                oldStudent.Description = CurrentStudent.Description;
-                oldStudent.Phone = CurrentStudent.Phone;
-                oldStudent.GroupName = CurrentStudent.GroupName;
+                oldStudent = new StudentViewModel
+                {
+                    StudentId = CurrentStudent.StudentId,
+                    Name = CurrentStudent.Name,
+                    Description = CurrentStudent.Description,
+                    Phone = CurrentStudent.Phone,
+                    GroupName = CurrentStudent.GroupName,
+                    RoomNo = CurrentStudent.RoomNo
+                };
 
                 IsEditing = true;
                 ErrorMessage = string.Empty;
@@ -176,7 +179,7 @@ namespace StudentHostelApp.ViewModel
                     Name = CurrentStudent.Name,
                     Phone = CurrentStudent.Phone,
                     Description = CurrentStudent.Description,
-                    Group = context.Groups.Where(p => p.GroupName == CurrentStudent.GroupName).Single()
+                    Group = context.Groups.Where(p => p.GroupName == CurrentStudent.GroupName).Single()                  
                 };
 
                 // Сохранение нового объекта

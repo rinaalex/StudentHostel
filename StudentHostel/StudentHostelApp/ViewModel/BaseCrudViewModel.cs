@@ -26,7 +26,7 @@ namespace StudentHostelApp.ViewModel
         /// <summary>
         /// Загружает список студентов для отображения
         /// </summary>
-        public virtual void GetData() { }
+        protected virtual void GetData() { }
 
         #region Свойства для управления режимами работы с коллекцией
         private bool isAdding;

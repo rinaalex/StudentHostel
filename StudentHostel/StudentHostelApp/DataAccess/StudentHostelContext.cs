@@ -14,13 +14,20 @@ namespace StudentHostelApp.DataAccess
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Accomodation> Accomodations { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().
                 HasRequired<Group>(p => p.Group).
                 WithMany(q => q.Students).
-                WillCascadeOnDelete(true);    
+                WillCascadeOnDelete(true);
+            modelBuilder.Entity<Accomodation>().
+                Property(p => p.Start)
+                .HasColumnType("datetime2")
+                .HasPrecision(0)
+                .IsRequired();
         }
     }
 }
