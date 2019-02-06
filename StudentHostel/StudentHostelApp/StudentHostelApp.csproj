@@ -91,6 +91,14 @@
     <Compile Include="Migrations\201902021218074_DataTypesDatetime2Updated.Designer.cs">
       <DependentUpon>201902021218074_DataTypesDatetime2Updated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902051437494_dateTimeUpdate.cs" />
+    <Compile Include="Migrations\201902051437494_dateTimeUpdate.Designer.cs">
+      <DependentUpon>201902051437494_dateTimeUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902051441429_dateTimeNullUpdate.cs" />
+    <Compile Include="Migrations\201902051441429_dateTimeNullUpdate.Designer.cs">
+      <DependentUpon>201902051441429_dateTimeNullUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Accomodation.cs" />
     <Compile Include="Model\Room.cs" />
     <Compile Include="ViewModel\AccomodationListViewModel.cs" />
@@ -193,6 +201,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902021218074_DataTypesDatetime2Updated.resx">
       <DependentUpon>201902021218074_DataTypesDatetime2Updated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902051437494_dateTimeUpdate.resx">
+      <DependentUpon>201902051437494_dateTimeUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902051441429_dateTimeNullUpdate.resx">
+      <DependentUpon>201902051441429_dateTimeNullUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

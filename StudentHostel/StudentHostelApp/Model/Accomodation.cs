@@ -1,17 +1,27 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace StudentHostelApp.Model
 {
-    public class Accomodation
+    public class Accomodation: INotifyPropertyChanged
     {
         public int AccomodationId { get; set; }
-        //[Required]
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        
+        public DateTime DateStart { get; set; }
+        public DateTime? DateEnd { get; set; }
         [Required]
         public Student Student { get; set; }
         [Required]
         public Room Room { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string property)
+        {
+            if(PropertyChanged!=null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
     }
 }

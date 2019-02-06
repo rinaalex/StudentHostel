@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Data.SqlTypes;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
@@ -39,9 +40,11 @@ namespace StudentHostelApp.ViewModel
                 CurrentAccomodation = null;
             }
 
-            //
+            // Инициализация команд
             AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
             SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
+            CancelCommand = new Command(DiscardChanges, () => { return IsAdding || IsEditing; });
+            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing); });
         }
 
         protected override void GetData()
@@ -49,10 +52,11 @@ namespace StudentHostelApp.ViewModel
             var accomodations = context.Accomodations.Select(p => new AccomodationViewModel
             {
                 AccomodationId=p.AccomodationId,
+                StudentId=p.Student.StudentId,
                 StudentName=p.Student.Name,
                 RoomNo=p.Room.RoomNumber,
-                DateStart=p.Start,
-                DateEnd=p.End
+                DateStart=p.DateStart,
+                DateEnd=p.DateEnd
             }).ToList();
 
             AccomodationList = new ObservableCollection<AccomodationViewModel>(accomodations);
@@ -60,7 +64,11 @@ namespace StudentHostelApp.ViewModel
 
         protected override void Add()
         {
-            AccomodationList.Add(new AccomodationViewModel { AccomodationId=0 });
+            AccomodationList.Add(new AccomodationViewModel
+            {
+                AccomodationId =0,
+                DateStart=DateTime.Now
+            });
             CurrentAccomodation = AccomodationList.Last();
             IsAdding = true;
         }
@@ -71,9 +79,13 @@ namespace StudentHostelApp.ViewModel
         {
             if (CurrentAccomodation != null)
             {
+                CurrentAccomodation.DateEnd = DateTime.Now;
+                OnPropertyChanged(nameof(CurrentAccomodation));
+
                 oldAccomodation = new AccomodationViewModel
                 {
                     AccomodationId = CurrentAccomodation.AccomodationId,
+                    StudentId = CurrentAccomodation.StudentId,
                     StudentName = CurrentAccomodation.StudentName,
                     RoomNo = CurrentAccomodation.RoomNo,
                     DateStart = CurrentAccomodation.DateStart,
@@ -90,23 +102,65 @@ namespace StudentHostelApp.ViewModel
 
         protected bool Validate(AccomodationViewModel accomodation)
         {
-            if (string.IsNullOrEmpty(accomodation.StudentName))
+            // При добавлении новой записи 
+            if (IsAdding)
             {
-                ErrorMessage = "Поле Студент не может быть пустым!";
-                return false;
+                // Проверяем корректность заполнения полей
+                if (accomodation.StudentId == 0)
+                {
+                    ErrorMessage = "Поле Студент не может быть пустым!";
+                    return false;
+                }
+                else if (string.IsNullOrEmpty(accomodation.RoomNo))
+                {
+                    ErrorMessage = "Поле Номер комнаты не может быть пустым!";
+                    return false;
+                }
+
+                else if (accomodation.DateStart == null)
+                {
+                    ErrorMessage = "Поле Дата заселения не может быть пустым!";
+                    return false;
+                }
+
+                // Проверяем, нет ли незавершенных записей для этого студента
+                var acc = context.Accomodations.Where(
+                    p => p.Student.StudentId == CurrentAccomodation.StudentId &&
+                    p.DateEnd == null).FirstOrDefault();
+                if (acc != null)
+                {
+                    ErrorMessage = "Студент еще не выселен!";
+                    return false;
+                }
+
+                // Проверяем, есть ли свободные места в комнате
+                var count = context.Rooms.Where(
+                    p => p.RoomNumber == CurrentAccomodation.RoomNo).
+                    Select(p => p.Seats).SingleOrDefault();
+                var studCount = context.Accomodations.
+                    Where(p => p.Room.RoomNumber == CurrentAccomodation.RoomNo &&
+                    p.DateEnd!=null).Count();
+
+                if (count == studCount)
+                {
+                    ErrorMessage = "В этой комнате нет свободных мест!";
+                    return false;
+                }
             }
-            else if (string.IsNullOrEmpty(accomodation.RoomNo))
+
+            // При редактировании записи 
+            if (IsEditing)
             {
-                ErrorMessage = "Поле Номер комнаты не может быть пустым!";
-                return false;
+                // Проверяем, заполнена ли дата выселения
+                if (accomodation.DateEnd == null)
+                {
+                    ErrorMessage = "Поле Дата выселения не может быть пустым!";
+                    return false;
+                }
             }
-            //else if(accomodation.DateStart==null)
-            //{
-            //    ErrorMessage = "Поле Дата заселения не может быть пустым!";
-            //    return false;
-            //}
-            else
-                return true;
+
+            ErrorMessage = string.Empty;
+            return true;            
         }
 
         protected override void SaveChanges()
@@ -115,16 +169,7 @@ namespace StudentHostelApp.ViewModel
             {
                 if (IsAdding)
                 {
-                    //Accomodation accomodation = new Accomodation
-                    //{
-                    //    AccomodationId = 0,
-                    //    Student = context.Students.Where(p => p.Name == CurrentAccomodation.StudentName).FirstOrDefault(),
-                    //    Room = context.Set<Room>().Where(p=>p.RoomNumber==CurrentAccomodation.RoomNo).FirstOrDefault(),
-                    //    Start = DateTime.Today,//CurrentAccomodation.DateStart,
-                    //    End = CurrentAccomodation.DateEnd
-                    //};
-
-                    var student = context.Students.Single(p => p.Name == CurrentAccomodation.StudentName);
+                    var student = context.Students.Single(p => p.StudentId == CurrentAccomodation.StudentId);
                     var room = context.Rooms.Single(p => p.RoomNumber == CurrentAccomodation.RoomNo);
                     student.RoomsLink = new List<Accomodation>
                     {
@@ -132,16 +177,38 @@ namespace StudentHostelApp.ViewModel
                         {
                             Student=student,
                             Room=room,
-                            Start=DateTime.Now
+                            DateStart=CurrentAccomodation.DateStart
                         }
                     };
-                    //context.Accomodations.Add(accomodation);
                     context.SaveChanges();
+                    IsAdding = false;
+
+                    CurrentAccomodation.AccomodationId = student.RoomsLink.Where(p => p.Student.StudentId == CurrentAccomodation.StudentId).Select(p => p.AccomodationId).LastOrDefault();
+                    CurrentAccomodation.StudentName = student.Name;
+                    OnPropertyChanged(nameof(CurrentAccomodation));
                 }
                 else if(IsEditing)
                 {
-                    
+                    var acc = context.Accomodations.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).SingleOrDefault();
+                    acc.DateEnd = CurrentAccomodation.DateEnd;
+                    context.SaveChanges();
+                    IsEditing = false;
                 }
+            }
+        }
+
+        protected override void DiscardChanges()
+        {
+            if(IsAdding)
+            {
+                AccomodationList.Remove(CurrentAccomodation);
+                IsAdding = false;
+                ErrorMessage = string.Empty;
+            }
+            else if (IsEditing)
+            {
+                IsEditing = false;
+                //скопировать старый объект
             }
         }
     }
