@@ -30,23 +30,20 @@
 
         <StackPanel Grid.Column="0" Grid.Row="1">
             <TextBlock TextWrapping="Wrap" Text="ФИО:" />
-            <TextBox Text="{Binding CurrentStudent.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     TextChanged="TextBox_TextChanged" 
+            <TextBox Text="{Binding CurrentStudent.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                      IsEnabled="{Binding IsAddingOrEditing}"/>
             <TextBlock TextWrapping="Wrap" Text="Телефон:" />
             <TextBox TextWrapping="Wrap" Text="{Binding CurrentStudent.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     TextChanged="TextBox_TextChanged"
                      IsEnabled="{Binding IsAddingOrEditing}"/>
             <TextBlock TextWrapping="Wrap" Text="Комментарий:" />
             <TextBox TextWrapping="Wrap" Text="{Binding CurrentStudent.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     TextChanged="TextBox_TextChanged"
                      IsEnabled="{Binding IsAddingOrEditing}"/>
             <TextBlock TextWrapping="Wrap" Text="Учебная группа:"/>
             <ComboBox 
                   ItemsSource="{Binding GroupList}" 
                   DisplayMemberPath="GroupName" 
                   SelectedValue="{Binding CurrentStudent.GroupName, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedValuePath ="GroupName" SelectionChanged="ComboBox_SelectionChanged"  
+                  SelectedValuePath ="GroupName" 
                   IsEnabled="{Binding IsAddingOrEditing}"
             />
         </StackPanel>

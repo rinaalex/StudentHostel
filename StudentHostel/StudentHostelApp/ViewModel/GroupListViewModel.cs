@@ -4,6 +4,7 @@ using System.ComponentModel;
 using StudentHostelApp.DataAccess;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
+using StudentHostelApp.ViewModel.SingleEntityVM;
 
 namespace StudentHostelApp.ViewModel
 {
@@ -12,10 +13,10 @@ namespace StudentHostelApp.ViewModel
     /// </summary>
     public class GroupListViewModel:BaseCrudViewModel
     {
-        public ObservableCollection<Group> GroupList { get; private set; }
+        public ObservableCollection<GroupViewModel> GroupList { get; private set; }
 
-        private Group currentGroup;
-        public Group CurrentGroup
+        private GroupViewModel currentGroup;
+        public GroupViewModel CurrentGroup
         {
             get
             {
@@ -55,17 +56,13 @@ namespace StudentHostelApp.ViewModel
         protected override void GetData()
         {
             // Загрузка из контекста необходимых для отображения данных
-            var groups = context.Groups.Select(p => new
+            var groups = context.Groups.Select(p => new GroupViewModel
             {
-                p.GroupId,
-                p.GroupName
-            }).ToList().Select(c => new Group
-            {
-                GroupId = c.GroupId,
-                GroupName = c.GroupName
+                GroupId = p.GroupId,
+                GroupName = p.GroupName
             }).ToList();
 
-            GroupList = new ObservableCollection<Group>(groups);
+            GroupList = new ObservableCollection<GroupViewModel>(groups);
            
         }        
 
@@ -75,7 +72,7 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         protected override void Add()
         {
-            GroupList.Add(new Group { GroupId = 0 });
+            GroupList.Add(new GroupViewModel { GroupId = 0 });
             CurrentGroup = GroupList.Last();
             IsAdding = true;
         }
@@ -90,10 +87,11 @@ namespace StudentHostelApp.ViewModel
             if (CurrentGroup != null)
             {
                 IsEditing = true;
-                oldGroup = new Group();
-                oldGroup.GroupId = CurrentGroup.GroupId;
-                oldGroup.GroupName = CurrentGroup.GroupName;
-                //oldGroup.Students = CurrentGroup.Students;
+                oldGroup = new Group
+                {
+                    GroupId = CurrentGroup.GroupId,
+                    GroupName = CurrentGroup.GroupName
+                };
                 ErrorMessage = string.Empty;
             }
             else
@@ -105,7 +103,7 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         /// <param name="group">Проверяемый объект</param>
         /// <returns></returns>
-        private bool Validate(Group group)
+        private bool Validate(GroupViewModel group)
         {
             if (string.IsNullOrEmpty(group.GroupName))
             {
@@ -134,10 +132,14 @@ namespace StudentHostelApp.ViewModel
                 // Сохранение нового объекта
                 if (CurrentGroup.GroupId == 0)
                 {
-                    context.Groups.Add(CurrentGroup);
+                    Group group = new Group
+                    {
+                        GroupId = CurrentGroup.GroupId,
+                        GroupName = CurrentGroup.GroupName
+                    };
+                    context.Groups.Add(group);
                     context.SaveChanges();
                     CurrentGroup.GroupId = context.Groups.OrderByDescending(p => p.GroupId).FirstOrDefault().GroupId;
-                    OnPropertyChanged(nameof(CurrentGroup));
                     IsAdding = false;
                 }
                 // Сохранение изменений в текущем объекте
@@ -146,7 +148,6 @@ namespace StudentHostelApp.ViewModel
                     var result = context.Groups.Where(p => p.GroupId == oldGroup.GroupId).FirstOrDefault();
                     result.GroupName = CurrentGroup.GroupName;
                     context.SaveChanges();
-                    OnPropertyChanged(nameof(CurrentGroup));
                     IsEditing = false;
                 }
             }
@@ -183,7 +184,6 @@ namespace StudentHostelApp.ViewModel
             {               
                 CurrentGroup.GroupName = oldGroup.GroupName;
                 IsEditing = false;
-                OnPropertyChanged(nameof(CurrentGroup));
             }
             ErrorMessage = string.Empty;
         }

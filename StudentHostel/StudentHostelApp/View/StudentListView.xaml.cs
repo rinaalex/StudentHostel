@@ -25,17 +25,5 @@ namespace StudentHostelApp.View
             InitializeComponent();
             this.DataContext = new StudentListViewModel();
         }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //костыль для обновления значения в ячейке после отмены изменений
-            dataGrid.Items.Refresh();
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //костыль для обновления значения в ячейке после отмены изменений
-            dataGrid.Items.Refresh();
-        }
     }
 }

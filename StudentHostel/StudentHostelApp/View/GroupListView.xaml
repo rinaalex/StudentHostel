@@ -22,7 +22,7 @@
         <StackPanel Grid.Column="1">
             <TextBlock Text="Название учебной группы:"></TextBlock>
             <TextBox Text="{Binding CurrentGroup.GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     IsEnabled="{Binding IsAddingOrEditing}" TextChanged="TextBox_TextChanged"></TextBox>
+                     IsEnabled="{Binding IsAddingOrEditing}"></TextBox>
             <Button Content="Добавить" Command="{Binding AddCommand}"></Button>
             <Button Content="Изменить" Command="{Binding EditCommand}"></Button>
             <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}"></Button>

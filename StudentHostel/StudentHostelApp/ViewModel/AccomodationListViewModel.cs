@@ -7,6 +7,7 @@ using System.Data.Entity.Validation;
 using System.Data.SqlTypes;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
+using StudentHostelApp.ViewModel.SingleEntityVM;
 
 namespace StudentHostelApp.ViewModel
 {
@@ -44,7 +45,7 @@ namespace StudentHostelApp.ViewModel
             AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
             SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
             CancelCommand = new Command(DiscardChanges, () => { return IsAdding || IsEditing; });
-            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing); });
+            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing)&&(CurrentAccomodation.DateEnd==null); });
         }
 
         protected override void GetData()
@@ -80,7 +81,6 @@ namespace StudentHostelApp.ViewModel
             if (CurrentAccomodation != null)
             {
                 CurrentAccomodation.DateEnd = DateTime.Now;
-                OnPropertyChanged(nameof(CurrentAccomodation));
 
                 oldAccomodation = new AccomodationViewModel
                 {
@@ -185,7 +185,6 @@ namespace StudentHostelApp.ViewModel
 
                     CurrentAccomodation.AccomodationId = student.RoomsLink.Where(p => p.Student.StudentId == CurrentAccomodation.StudentId).Select(p => p.AccomodationId).LastOrDefault();
                     CurrentAccomodation.StudentName = student.Name;
-                    OnPropertyChanged(nameof(CurrentAccomodation));
                 }
                 else if(IsEditing)
                 {
@@ -208,7 +207,8 @@ namespace StudentHostelApp.ViewModel
             else if (IsEditing)
             {
                 IsEditing = false;
-                //скопировать старый объект
+                CurrentAccomodation.DateEnd = null;
+                ErrorMessage = string.Empty;
             }
         }
     }

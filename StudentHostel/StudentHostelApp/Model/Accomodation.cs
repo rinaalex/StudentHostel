@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentHostelApp.Model
 {
-    public class Accomodation: INotifyPropertyChanged
+    public class Accomodation/*: INotifyPropertyChanged*/
     {
         public int AccomodationId { get; set; }
         
@@ -15,13 +15,13 @@ namespace StudentHostelApp.Model
         [Required]
         public Room Room { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string property)
-        {
-            if(PropertyChanged!=null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected void OnPropertyChanged(string property)
+        //{
+        //    if(PropertyChanged!=null)
+        //    {
+        //        PropertyChanged(this, new PropertyChangedEventArgs(property));
+        //    }
+        //}
     }
 }

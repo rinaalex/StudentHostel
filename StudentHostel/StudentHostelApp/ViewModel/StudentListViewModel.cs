@@ -7,6 +7,7 @@ using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
 using System.ComponentModel;
 using System.Data.Entity;
+using StudentHostelApp.ViewModel.SingleEntityVM;
 
 namespace StudentHostelApp.ViewModel
 {
