@@ -20,10 +20,17 @@ namespace StudentHostelApp.View
     /// </summary>
     public partial class StudentListView : Window
     {
+        StudentListViewModel viewModel = new StudentListViewModel();
         public StudentListView()
         {
             InitializeComponent();
-            this.DataContext = new StudentListViewModel();
+            this.DataContext = viewModel; 
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
     }
 }

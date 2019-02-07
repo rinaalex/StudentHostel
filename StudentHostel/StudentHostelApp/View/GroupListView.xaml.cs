@@ -34,5 +34,11 @@ namespace StudentHostelApp.View
             if (MessageBox.Show("Вы действительно хотите удалить выбранную группу?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 viewModel.DeleteCommand.Execute("");
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+        }
     }
 }

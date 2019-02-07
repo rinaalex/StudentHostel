@@ -26,5 +26,11 @@ namespace StudentHostelApp.View
             InitializeComponent();
             this.DataContext = viewModel;
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+        }
     }
 }
