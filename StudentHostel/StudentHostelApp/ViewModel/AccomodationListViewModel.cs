@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
 using StudentHostelApp.Code;
@@ -12,6 +13,12 @@ namespace StudentHostelApp.ViewModel
     class AccomodationListViewModel: BaseCrudViewModel
     {
         public ObservableCollection<AccomodationViewModel> AccomodationList { get; set; }
+
+        // Список доступных для заселения комнат
+        public ObservableCollection<RoomViewModel> RoomsList { get; private set; }
+
+        // Список незаселенных студентов
+        public ObservableCollection<StudentViewModel> StudentsList { get; private set; }
 
         private AccomodationViewModel currentAccomodation;
         public AccomodationViewModel CurrentAccomodation
@@ -48,6 +55,7 @@ namespace StudentHostelApp.ViewModel
 
         protected override void GetData()
         {
+            // Загрузка списка размещений
             var accomodations = context.Accomodations.Select(p => new AccomodationViewModel
             {
                 AccomodationId=p.AccomodationId,
@@ -59,6 +67,55 @@ namespace StudentHostelApp.ViewModel
             }).ToList();
 
             AccomodationList = new ObservableCollection<AccomodationViewModel>(accomodations);
+
+            GetStudentsList();
+            GetRoomsList();
+        }
+
+        private void GetStudentsList()
+        {
+            // Загрузка списка незаселенных студентов
+            var students = context.Students.Select(p => new
+            {
+                p.StudentId,
+                p.Name,
+                p.RoomsLink
+            }).Where(q => q.RoomsLink.Where(c => c.DateEnd == null).Count() == 0);
+
+            StudentsList = new ObservableCollection<StudentViewModel>();
+            foreach (var student in students)
+            {
+                StudentsList.Add(new StudentViewModel
+                {
+                    StudentId = student.StudentId,
+                    Name = student.Name
+                });
+            }
+            OnPropertyChanged(nameof(StudentsList));
+        }
+
+        private void GetRoomsList()
+        {
+            // Загрузка списка комнат, доступных для заселения
+            var rooms = context.Set<Room>().Select(p => new
+            {
+                p.RoomId,
+                p.RoomNumber,
+                p.Seats,
+                p.StudentsLink
+            }).Where(q => q.StudentsLink.Where(c => c.DateEnd == null).Count() < q.Seats);
+
+            RoomsList = new ObservableCollection<RoomViewModel>();
+
+            foreach (var room in rooms)
+            {
+                RoomsList.Add(new RoomViewModel
+                {
+                    RoomId = room.RoomId,
+                    RoomNo = room.RoomNumber
+                });
+            }
+            OnPropertyChanged(nameof(RoomsList));
         }
 
         protected override void Add()
@@ -137,7 +194,7 @@ namespace StudentHostelApp.ViewModel
                     Select(p => p.Seats).SingleOrDefault();
                 var studCount = context.Accomodations.
                     Where(p => p.Room.RoomNumber == CurrentAccomodation.RoomNo &&
-                    p.DateEnd!=null).Count();
+                    p.DateEnd==null).Count();
 
                 if (count == studCount)
                 {
@@ -169,15 +226,15 @@ namespace StudentHostelApp.ViewModel
                 {
                     var student = context.Students.Single(p => p.StudentId == CurrentAccomodation.StudentId);
                     var room = context.Rooms.Single(p => p.RoomNumber == CurrentAccomodation.RoomNo);
-                    student.RoomsLink = new List<Accomodation>
-                    {
+                    student.RoomsLink.Add(
+
                         new Accomodation
                         {
-                            Student=student,
-                            Room=room,
-                            DateStart=CurrentAccomodation.DateStart
+                            Student = student,
+                            Room = room,
+                            DateStart = CurrentAccomodation.DateStart
                         }
-                    };
+                    );
                     context.SaveChanges();
                     IsAdding = false;
 
@@ -191,6 +248,8 @@ namespace StudentHostelApp.ViewModel
                     context.SaveChanges();
                     IsEditing = false;
                 }
+                GetRoomsList();
+                GetStudentsList();
             }
         }
 

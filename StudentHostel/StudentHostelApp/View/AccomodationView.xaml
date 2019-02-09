@@ -27,10 +27,18 @@
         </DataGrid>
 
         <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBox Text="{Binding CurrentAccomodation.StudentId}" 
-                     IsEnabled="{Binding IsAdding}"></TextBox>
-            <TextBox Text="{Binding CurrentAccomodation.RoomNo}"
-                     IsEnabled="{Binding IsAdding}"></TextBox>
+            <ComboBox ItemsSource="{Binding StudentsList}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="StudentId"
+                      SelectedValue="{Binding CurrentAccomodation.StudentId}"
+                      IsEnabled="{Binding IsAdding}">
+            </ComboBox>
+            <ComboBox ItemsSource="{Binding RoomsList}"
+                      DisplayMemberPath="RoomNo"
+                      SelectedValuePath="RoomNo"
+                      SelectedValue="{Binding CurrentAccomodation.RoomNo}"
+                      IsEnabled="{Binding IsAdding}">
+            </ComboBox>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateStart, Mode=TwoWay}"
                         IsEnabled="{Binding IsAdding}"></DatePicker>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateEnd, Mode=TwoWay}"
