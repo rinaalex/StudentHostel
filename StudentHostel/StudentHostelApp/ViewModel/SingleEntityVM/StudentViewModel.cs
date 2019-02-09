@@ -1,4 +1,5 @@
 ﻿using System;
+using StudentHostelApp.Code;
 
 namespace StudentHostelApp.ViewModel.SingleEntityVM
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace StudentHostelApp.ViewModel.SingleEntityVM
+namespace StudentHostelApp.Code
 {
     /// <summary>
     /// Предоставляет базовый интерфейс ViewModel
