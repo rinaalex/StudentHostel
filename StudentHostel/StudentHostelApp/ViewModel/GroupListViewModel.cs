@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using StudentHostelApp.DataAccess;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
 using StudentHostelApp.ViewModel.SingleEntityVM;
+using StudentHostelApp.Code;
 
 namespace StudentHostelApp.ViewModel
 {

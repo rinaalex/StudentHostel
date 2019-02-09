@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
-using System.Data.SqlTypes;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
+using StudentHostelApp.Code;
 using StudentHostelApp.ViewModel.SingleEntityVM;
 
 namespace StudentHostelApp.ViewModel

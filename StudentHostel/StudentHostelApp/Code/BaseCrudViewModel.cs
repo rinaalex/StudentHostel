@@ -2,7 +2,7 @@
 using StudentHostelApp.DataAccess;
 using StudentHostelApp.Commands;
 
-namespace StudentHostelApp.ViewModel
+namespace StudentHostelApp.Code
 {
     /// <summary>
     /// Предоставляет базовый CRUD интерфейс модели представления

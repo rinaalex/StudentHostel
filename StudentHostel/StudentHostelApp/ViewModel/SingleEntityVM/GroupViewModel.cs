@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using System;
 
 namespace StudentHostelApp.ViewModel.SingleEntityVM
 {
