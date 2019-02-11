@@ -252,8 +252,10 @@ namespace StudentHostelApp.ViewModel
                     context.SaveChanges();
                     IsAdding = false;
 
+                    //!!!нужно подправить это
                     CurrentAccomodation.AccomodationId = student.RoomsLink.Where(p => p.Student.StudentId == CurrentAccomodation.StudentId).Select(p => p.AccomodationId).LastOrDefault();
                     CurrentAccomodation.StudentName = student.Name;
+                    CurrentAccomodation.RoomNo= student.RoomsLink.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).Select(p => p.Room.RoomNumber).LastOrDefault();
                 }
                 else if(IsEditing)
                 {
