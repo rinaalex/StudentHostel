@@ -10,6 +10,9 @@ using StudentHostelApp.ViewModel.SingleEntityVM;
 
 namespace StudentHostelApp.ViewModel
 {
+    /// <summary>
+    /// Предоставляет CRUD-функции для работы со списком размещений
+    /// </summary>
     class AccomodationListViewModel: BaseCrudViewModel
     {
         public ObservableCollection<AccomodationViewModel> AccomodationList { get; set; }
@@ -34,6 +37,7 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
+        // Определяет, доступна ли запись для редактирования
         private bool isEditable
         {
             get

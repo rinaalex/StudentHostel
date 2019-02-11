@@ -18,13 +18,20 @@ namespace StudentHostelApp.ViewModel.SingleEntityVM
         public string RoomNo
         {
             get { return this.roomNo; }
-            set { this.roomNo = value;OnPropertyChanged(nameof(RoomNo)); }
+            set { this.roomNo = value; OnPropertyChanged(nameof(RoomNo)); }
         }
         private int seats;
         public int Seats
         {
             get { return this.seats; }
-            set { this.seats = value;OnPropertyChanged(nameof(Seats)); }
+            set { this.seats = value; OnPropertyChanged(nameof(Seats)); }
+        }
+
+        private int freeSeats;
+        public int FreeSeats
+        {
+            get { return this.freeSeats; }
+            set { this.freeSeats = value; OnPropertyChanged(nameof(FreeSeats)); }
         }
     }
 }

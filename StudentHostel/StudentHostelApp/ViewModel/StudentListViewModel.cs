@@ -9,7 +9,7 @@ using StudentHostelApp.ViewModel.SingleEntityVM;
 namespace StudentHostelApp.ViewModel
 {
     /// <summary>
-    /// Предоставляет возможности для работы с таблицей Студенты
+    /// Предоставляет CRUD-функции для работы со списком студентов
     /// </summary>
     public class StudentListViewModel : BaseCrudViewModel
     {

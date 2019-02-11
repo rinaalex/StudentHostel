@@ -3,6 +3,9 @@ using StudentHostelApp.Code;
 
 namespace StudentHostelApp.ViewModel.SingleEntityVM
 {
+    /// <summary>
+    /// Предоставляет информацию о размещении для отображения
+    /// </summary>
     public class AccomodationViewModel :BaseViewModel
     {
         private int accomodationId;

@@ -8,7 +8,7 @@ using StudentHostelApp.Code;
 namespace StudentHostelApp.ViewModel
 {
     /// <summary>
-    /// Предоставляет доступ к коллекции групп для отображения и редактирования
+    /// Предоставляет CRUD-функции для работы со списком учебных групп
     /// </summary>
     public class GroupListViewModel:BaseCrudViewModel
     {
@@ -61,8 +61,7 @@ namespace StudentHostelApp.ViewModel
                 GroupName = p.GroupName
             }).ToList();
 
-            GroupList = new ObservableCollection<GroupViewModel>(groups);
-           
+            GroupList = new ObservableCollection<GroupViewModel>(groups);           
         }        
 
         #region Свойства и методы для редактирвания коллекции

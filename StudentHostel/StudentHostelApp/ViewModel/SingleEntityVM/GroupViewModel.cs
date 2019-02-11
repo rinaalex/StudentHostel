@@ -3,6 +3,9 @@ using StudentHostelApp.Code;
 
 namespace StudentHostelApp.ViewModel.SingleEntityVM
 {
+    /// <summary>
+    /// Предоставляет информацию об учебной группе для отображения
+    /// </summary>
     public class GroupViewModel: BaseViewModel
     {
         private int groupId;
