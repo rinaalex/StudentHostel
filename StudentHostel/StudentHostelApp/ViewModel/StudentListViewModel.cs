@@ -186,7 +186,7 @@ namespace StudentHostelApp.ViewModel
                     context.Students.Add(student);
                     context.SaveChanges();
                     CurrentStudent.StudentId = context.Students.OrderByDescending(p => p.StudentId).FirstOrDefault().StudentId;
-                    OnPropertyChanged(nameof(CurrentStudent));
+                    //OnPropertyChanged(nameof(CurrentStudent));
                     IsAdding = false;
                 }
                 // Сохранение изменений в существующум объекте

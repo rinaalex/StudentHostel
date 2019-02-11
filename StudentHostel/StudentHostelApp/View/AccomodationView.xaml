@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" Grid.Row="0" Grid.ColumnSpan="2" ColumnWidth="*"
-                  ItemsSource="{Binding AccomodationList}" SelectedItem="{Binding CurrentAccomodation, Mode=TwoWay}">
+                  ItemsSource="{Binding AccomodationList}" SelectedItem="{Binding CurrentAccomodation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Студент" Binding="{Binding StudentName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Комната" Binding="{Binding RoomNo, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
@@ -35,8 +35,8 @@
             </ComboBox>
             <ComboBox ItemsSource="{Binding RoomsList}"
                       DisplayMemberPath="RoomNo"
-                      SelectedValuePath="RoomNo"
-                      SelectedValue="{Binding CurrentAccomodation.RoomNo, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="RoomId"
+                      SelectedValue="{Binding CurrentAccomodation.RoomId, UpdateSourceTrigger=PropertyChanged}"
                       IsEnabled="{Binding IsAdding}">
             </ComboBox>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateStart, Mode=TwoWay}"

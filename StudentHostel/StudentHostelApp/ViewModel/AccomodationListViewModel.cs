@@ -15,10 +15,10 @@ namespace StudentHostelApp.ViewModel
         public ObservableCollection<AccomodationViewModel> AccomodationList { get; set; }
 
         // Список доступных для заселения комнат
-        public ObservableCollection<RoomViewModel> RoomsList { get; private set; }
+        public ObservableCollection<RoomViewModel> RoomsList { get;  set; }
 
         // Список незаселенных студентов
-        public ObservableCollection<StudentViewModel> StudentsList { get; private set; }
+        public ObservableCollection<StudentViewModel> StudentsList { get;  set; }
 
         private AccomodationViewModel currentAccomodation;
         public AccomodationViewModel CurrentAccomodation
@@ -73,6 +73,7 @@ namespace StudentHostelApp.ViewModel
                 AccomodationId=p.AccomodationId,
                 StudentId=p.Student.StudentId,
                 StudentName=p.Student.Name,
+                RoomId=p.Room.RoomId,
                 RoomNo=p.Room.RoomNumber,
                 DateStart=p.DateStart,
                 DateEnd=p.DateEnd
@@ -154,6 +155,7 @@ namespace StudentHostelApp.ViewModel
                     AccomodationId = CurrentAccomodation.AccomodationId,
                     StudentId = CurrentAccomodation.StudentId,
                     StudentName = CurrentAccomodation.StudentName,
+                    RoomId=CurrentAccomodation.RoomId,
                     RoomNo = CurrentAccomodation.RoomNo,
                     DateStart = CurrentAccomodation.DateStart,
                     DateEnd = CurrentAccomodation.DateEnd
@@ -178,7 +180,7 @@ namespace StudentHostelApp.ViewModel
                     ErrorMessage = "Поле Студент не может быть пустым!";
                     return false;
                 }
-                else if (string.IsNullOrEmpty(accomodation.RoomNo))
+                else if (accomodation.RoomId == 0)
                 {
                     ErrorMessage = "Поле Номер комнаты не может быть пустым!";
                     return false;
@@ -202,10 +204,10 @@ namespace StudentHostelApp.ViewModel
 
                 // Проверяем, есть ли свободные места в комнате
                 var count = context.Rooms.Where(
-                    p => p.RoomNumber == CurrentAccomodation.RoomNo).
+                    p => p.RoomId == CurrentAccomodation.RoomId).
                     Select(p => p.Seats).SingleOrDefault();
                 var studCount = context.Accomodations.
-                    Where(p => p.Room.RoomNumber == CurrentAccomodation.RoomNo &&
+                    Where(p => p.Room.RoomId == CurrentAccomodation.RoomId &&
                     p.DateEnd==null).Count();
 
                 if (count == studCount)
@@ -237,7 +239,7 @@ namespace StudentHostelApp.ViewModel
                 if (IsAdding)
                 {
                     var student = context.Students.Single(p => p.StudentId == CurrentAccomodation.StudentId);
-                    var room = context.Rooms.Single(p => p.RoomNumber == CurrentAccomodation.RoomNo);
+                    var room = context.Rooms.Single(p => p.RoomId == CurrentAccomodation.RoomId);
                     student.RoomsLink.Add(
 
                         new Accomodation
