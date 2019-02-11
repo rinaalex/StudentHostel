@@ -110,8 +110,8 @@
     <Compile Include="ViewModel\SingleEntityVM\StudentViewModel.cs" />
     <Compile Include="ViewModel\StudentListViewModel.cs" />
     <Compile Include="Code\BaseCrudViewModel.cs" />
-    <Compile Include="View\AccomodationView.xaml.cs">
-      <DependentUpon>AccomodationView.xaml</DependentUpon>
+    <Compile Include="View\AccomodationListView.xaml.cs">
+      <DependentUpon>AccomodationListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GroupListView.xaml.cs">
       <DependentUpon>GroupListView.xaml</DependentUpon>
@@ -132,7 +132,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\AccomodationView.xaml">
+    <Page Include="View\AccomodationListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

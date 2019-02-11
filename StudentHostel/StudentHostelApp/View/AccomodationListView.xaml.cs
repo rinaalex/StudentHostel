@@ -18,10 +18,10 @@ namespace StudentHostelApp.View
     /// <summary>
     /// Логика взаимодействия для AccomodationView.xaml
     /// </summary>
-    public partial class AccomodationView : Window
+    public partial class AccomodationListView : Window
     {
         AccomodationListViewModel viewModel = new AccomodationListViewModel();
-        public AccomodationView()
+        public AccomodationListView()
         {
             InitializeComponent();
             this.DataContext = viewModel;

@@ -42,7 +42,7 @@ namespace StudentHostelApp
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            AccomodationView accomodationView = new AccomodationView();
+            AccomodationListView accomodationView = new AccomodationListView();
             accomodationView.Show();
             this.Close();
         }
