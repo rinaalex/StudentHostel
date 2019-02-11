@@ -55,7 +55,7 @@ namespace StudentHostelApp.ViewModel
         protected override void GetData()
         {
             // Загрузка из контекста необходимых для отображения данных
-            var groups = context.Groups.Select(p => new GroupViewModel
+            var groups = context.Groups.Where(q=>!q.SoftDeleted).Select(p => new GroupViewModel
             {
                 GroupId = p.GroupId,
                 GroupName = p.GroupName

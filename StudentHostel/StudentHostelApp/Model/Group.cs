@@ -14,6 +14,8 @@ namespace StudentHostelApp.Model
         [MaxLength(10)]
         public string GroupName { get; set; }
 
+        public bool SoftDeleted { get; set; }
+
         public virtual ICollection<Student> Students { get; set; }
     }
 }
