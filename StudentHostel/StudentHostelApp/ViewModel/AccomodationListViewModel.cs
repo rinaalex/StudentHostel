@@ -34,6 +34,18 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
+        private bool isEditable
+        {
+            get
+            {
+                if (this.CurrentAccomodation == null)
+                    return false;
+                if (this.CurrentAccomodation.DateEnd == null)
+                    return true;
+                return false;
+            }
+        }
+
         public AccomodationListViewModel()
         {
             GetData();
@@ -50,7 +62,7 @@ namespace StudentHostelApp.ViewModel
             AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
             SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
             CancelCommand = new Command(DiscardChanges, () => { return IsAdding || IsEditing; });
-            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing)&&(CurrentAccomodation.DateEnd==null); });
+            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing)&&isEditable; });
         }
 
         protected override void GetData()
