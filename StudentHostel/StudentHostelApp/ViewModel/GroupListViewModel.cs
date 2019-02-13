@@ -32,6 +32,7 @@ namespace StudentHostelApp.ViewModel
         public GroupListViewModel()
         {
             GetData();
+
             if (GroupList.Count == 0)
             {
                 CurrentGroup = null;
@@ -49,9 +50,6 @@ namespace StudentHostelApp.ViewModel
             CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing); });
         }
 
-        /// <summary>
-        /// Загружает список групп для отображения и редактриования
-        /// </summary>
         protected override void GetData()
         {
             // Загрузка из контекста необходимых для отображения данных
@@ -65,9 +63,6 @@ namespace StudentHostelApp.ViewModel
         }        
 
         #region Свойства и методы для редактирвания коллекции
-        /// <summary>
-        /// Выполняет переход в режим добавления нового объекта
-        /// </summary>
         protected override void Add()
         {
             GroupList.Add(new GroupViewModel { GroupId = 0 });
@@ -77,9 +72,6 @@ namespace StudentHostelApp.ViewModel
 
         private Group oldGroup;
 
-        /// <summary>
-        /// Выполняет переход в режим редактирования текущего объекта
-        /// </summary>
         protected override void Edit()
         {
             if (CurrentGroup != null)
@@ -120,9 +112,6 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
-        /// <summary>
-        /// Выполняет сохранение изменений в коллекции
-        /// </summary>
         protected override void SaveChanges()
         {
             if (Validate(CurrentGroup))
@@ -151,16 +140,13 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
-        /// <summary>
-        /// Выполняет удаление текущего объекта из коллекции
-        /// </summary>
         protected override void Delete()
         {
             if (CurrentGroup != null)
             {
                 var group = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
                 GroupList.Remove(CurrentGroup);
-                context.Groups.Remove(group);
+                group.SoftDeleted = true;
                 context.SaveChanges();
                 ErrorMessage = string.Empty;
             }
@@ -168,9 +154,6 @@ namespace StudentHostelApp.ViewModel
                 ErrorMessage = "Не выбран объект для удаления!";
         }
 
-        /// <summary>
-        /// Выполняет выход из режима добавления или редактирования
-        /// </summary>
         protected override void DiscardChanges()
         {
             if (IsAdding)
