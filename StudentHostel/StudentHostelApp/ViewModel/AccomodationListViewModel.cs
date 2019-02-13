@@ -97,7 +97,7 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         private void GetStudentsList()
         {            
-            var students = context.Students.Select(p => new
+            var students = context.Students.Where(s=>!s.SoftDeleted).Select(p => new
             {
                 p.StudentId,
                 p.Name,
@@ -122,7 +122,7 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         private void GetRoomsList()
         {
-            var rooms = context.Set<Room>().Select(p => new
+            var rooms = context.Set<Room>().Where(s=>!s.SoftDeleted).Select(p => new
             {
                 p.RoomId,
                 p.RoomNumber,
