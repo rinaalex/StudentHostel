@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Collections.ObjectModel;
-using StudentHostelApp.DataAccess;
 using StudentHostelApp.Code;
 using StudentHostelApp.Commands;
 using StudentHostelApp.ViewModel.SingleEntityVM;
@@ -23,7 +18,12 @@ namespace StudentHostelApp.ViewModel
         public RoomViewModel CurrentRoom
         {
             get { return this.currentRoom; }
-            set { this.currentRoom = value; OnPropertyChanged(nameof(CurrentRoom)); OnPropertyChanged(nameof(StudentsInRoomList)); }
+            set
+            {
+                this.currentRoom = value;
+                OnPropertyChanged(nameof(CurrentRoom));
+                OnPropertyChanged(nameof(StudentsInRoomList));
+            }
         }
 
         // Список студентов, проживающих в комнате на текущий момент
@@ -43,7 +43,8 @@ namespace StudentHostelApp.ViewModel
                     studentsInRoomList= new ObservableCollection<StudentViewModel>(students);
                     return studentsInRoomList;
                 }
-                else return null;
+                else
+                    return null;
             }
         }
 
@@ -82,7 +83,9 @@ namespace StudentHostelApp.ViewModel
         {
             CurrentRoom = new RoomViewModel
             {
-                RoomId = 0
+                RoomId = 0,
+                Seats=0,
+                FreeSeats=0
             };
             RoomsList.Add(CurrentRoom);
             IsAdding = true;
@@ -141,7 +144,6 @@ namespace StudentHostelApp.ViewModel
                     };
                     context.Rooms.Add(room);
                     context.SaveChanges();
-                    // !!!
                     CurrentRoom.FreeSeats = CurrentRoom.Seats;
                     IsAdding = false;
                     ErrorMessage = string.Empty;
@@ -152,7 +154,6 @@ namespace StudentHostelApp.ViewModel
                     room.RoomNumber = CurrentRoom.RoomNo;
                     room.Seats = CurrentRoom.Seats;
                     context.SaveChanges();
-                    // !!!
                     var count = context.Accomodations.Where(p => p.Room.RoomId == CurrentRoom.RoomId && p.DateEnd == null).Count();
                     CurrentRoom.FreeSeats = CurrentRoom.Seats - count;
                     IsEditing = false;
@@ -178,6 +179,9 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// Определяет, можно ли удалить текущий объект
+        /// </summary>
         private bool canDelete
         {
             get
@@ -190,13 +194,12 @@ namespace StudentHostelApp.ViewModel
                     }
                     else
                     {
-                        //ErrorMessage = "Невозможно удалить информацию о комнате, если в ней проживают студенты!";
+                        // Невозможно удалить информацию о комнате, если в ней проживают студенты
                         return false;
                     }
                 }
                 else
                 {
-                    //ErrorMessage="Нет"
                     return false;
                 }
             }
@@ -205,6 +208,7 @@ namespace StudentHostelApp.ViewModel
         protected override void Delete()
         {
             var room = context.Rooms.Where(p => p.RoomId == CurrentRoom.RoomId).SingleOrDefault();
+            // Помечаем объект как удаленный
             room.SoftDeleted = true;
             context.SaveChanges();
             RoomsList.Remove(CurrentRoom);

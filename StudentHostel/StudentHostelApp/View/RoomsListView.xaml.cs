@@ -32,5 +32,14 @@ namespace StudentHostelApp.View
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("Вы действительно хотите удалить информацию о выбранном объекте?",
+                "Предупреждение",MessageBoxButton.YesNo)==MessageBoxResult.Yes)
+            {
+                viewModel.DeleteCommand.Execute("");
+            }
+        }
     }
 }

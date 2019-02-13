@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
         mc:Ignorable="d"
-        Title="RoomsListView" Height="450" Width="800" Closing="Window_Closing">
+        Title="Список комнат" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -17,7 +17,8 @@
         </Grid.ColumnDefinitions>
 
         <DataGrid Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" AutoGenerateColumns="False" ColumnWidth="*"
-        ItemsSource="{Binding RoomsList, Mode=OneWay}" SelectedItem="{Binding CurrentRoom, Mode=TwoWay}">
+                  ItemsSource="{Binding RoomsList, Mode=OneWay}" SelectedItem="{Binding CurrentRoom, Mode=TwoWay}"
+                  CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Номер комнаты" Binding="{Binding RoomNo}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Количество мест" Binding="{Binding Seats}"></DataGridTextColumn>
@@ -26,7 +27,8 @@
         </DataGrid>
 
         <DataGrid Grid.Column="1" Grid.Row="0" Grid.RowSpan="1" AutoGenerateColumns="False" ColumnWidth="*"
-                  ItemsSource="{Binding StudentsInRoomList}">
+                  ItemsSource="{Binding StudentsInRoomList}" IsEnabled="{Binding IsBrowsing}"
+                  CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Name}"></DataGridTextColumn>
             </DataGrid.Columns>
@@ -42,7 +44,8 @@
             <Button Content="Изменить" Command="{Binding EditCommand}"></Button>
             <Button Content="Сохранить" Command="{Binding SaveCommand}"></Button>
             <Button Content="Отменить" Command="{Binding CancelCommand}"></Button>
-            <Button Content="Удалить" Command="{Binding DeleteCommand}"></Button>
+            <Button Content="Удалить" Click="DeleteButton_Click"></Button>
+            <TextBlock Text="{Binding ErrorMessage}"></TextBlock>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
             
