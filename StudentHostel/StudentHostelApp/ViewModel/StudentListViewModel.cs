@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
@@ -62,7 +63,7 @@ namespace StudentHostelApp.ViewModel
         protected override void GetData()
         {
             //Загрузка необходимых для отображения данных из контекста   
-            var students = context.Students.Select(p => new StudentViewModel
+            var students = context.Students.Where(q=>!q.SoftDeleted).Select(p => new StudentViewModel
             {
                 StudentId = p.StudentId,
                 Name = p.Name,
@@ -203,25 +204,22 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
-        /// <summary>
-        /// Удаляет текущий объект из коллекции
-        /// </summary>
         protected override void Delete()
         {
             if (CurrentStudent != null)
             {
-                // Создание объекта для удаления из контекста данных
-                Student newStudent = new Student
+                var student = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).SingleOrDefault();
+                // Помечаем объект как удаленный
+                student.SoftDeleted = true;
+                
+                // Определяем, есть ли у удаляемого студента незавершенные размещения
+                var accomodation = context.Accomodations.Where(p => p.Student.StudentId == CurrentStudent.StudentId && p.DateEnd == null).SingleOrDefault();
+                if (accomodation != null)
                 {
-                    StudentId = CurrentStudent.StudentId,
-                    Name = CurrentStudent.Name,
-                    Phone = CurrentStudent.Phone,
-                    Description = CurrentStudent.Description,
-                    Group = context.Groups.Where(p => p.GroupName == CurrentStudent.GroupName).Single()
-                };
-
-                // Удаление объекта из контекста и коллекции
-                context.Entry(newStudent).State = EntityState.Deleted;
+                    // Завершаем размещение
+                    accomodation.DateEnd = DateTime.Now;
+                }
+                                
                 StudentList.Remove(CurrentStudent);
                 context.SaveChanges();
                 ErrorMessage = string.Empty;

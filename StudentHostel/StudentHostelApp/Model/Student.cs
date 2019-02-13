@@ -15,6 +15,7 @@ namespace StudentHostelApp.Model
         [StringLength(11)]
         public string Phone { get; set; }
         public string Description { get; set; }
+        public bool SoftDeleted { get; set; }
         [Required]
         public virtual Group Group { get; set; }
 
