@@ -18,10 +18,10 @@ namespace StudentHostelApp.ViewModel
         public ObservableCollection<AccomodationViewModel> AccomodationList { get; set; }
 
         // Список доступных для заселения комнат
-        public ObservableCollection<RoomViewModel> RoomsList { get;  set; }
+        public ObservableCollection<RoomViewModel> RoomsList { get; private set; }
 
         // Список незаселенных студентов
-        public ObservableCollection<StudentViewModel> StudentsList { get;  set; }
+        public ObservableCollection<StudentViewModel> StudentsList { get;  private set; }
 
         private AccomodationViewModel currentAccomodation;
         public AccomodationViewModel CurrentAccomodation
@@ -37,7 +37,9 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
-        // Определяет, доступна ли запись для редактирования
+        /// <summary>
+        /// Определяет, доступна ли запись для редактирования
+        /// </summary>     
         private bool isEditable
         {
             get
@@ -53,6 +55,7 @@ namespace StudentHostelApp.ViewModel
         public AccomodationListViewModel()
         {
             GetData();
+
             if(AccomodationList.Count!=0)
             {
                 CurrentAccomodation = AccomodationList.First();
@@ -89,9 +92,11 @@ namespace StudentHostelApp.ViewModel
             GetRoomsList();
         }
 
+        /// <summary>
+        /// Выполняет загрузку списка незаселенных студентов
+        /// </summary>
         private void GetStudentsList()
-        {
-            // Загрузка списка незаселенных студентов
+        {            
             var students = context.Students.Select(p => new
             {
                 p.StudentId,
@@ -100,6 +105,7 @@ namespace StudentHostelApp.ViewModel
             }).Where(q => q.RoomsLink.Where(c => c.DateEnd == null).Count() == 0);
 
             StudentsList = new ObservableCollection<StudentViewModel>();
+
             foreach (var student in students)
             {
                 StudentsList.Add(new StudentViewModel
@@ -111,9 +117,11 @@ namespace StudentHostelApp.ViewModel
             OnPropertyChanged(nameof(StudentsList));
         }
 
+        /// <summary>
+        /// Выполняет загрузку списка комнат, доступных для заселения
+        /// </summary>
         private void GetRoomsList()
         {
-            // Загрузка списка комнат, доступных для заселения
             var rooms = context.Set<Room>().Select(p => new
             {
                 p.RoomId,
