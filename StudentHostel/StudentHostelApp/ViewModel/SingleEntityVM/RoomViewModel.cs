@@ -20,8 +20,8 @@ namespace StudentHostelApp.ViewModel.SingleEntityVM
             get { return this.roomNo; }
             set { this.roomNo = value; OnPropertyChanged(nameof(RoomNo)); }
         }
-        private int seats;
-        public int Seats
+        private byte seats;
+        public byte Seats
         {
             get { return this.seats; }
             set { this.seats = value; OnPropertyChanged(nameof(Seats)); }

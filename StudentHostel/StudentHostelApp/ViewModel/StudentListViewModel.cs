@@ -75,7 +75,7 @@ namespace StudentHostelApp.ViewModel
             StudentList = new ObservableCollection<StudentViewModel>(students);
 
             // Загрузка из контекста необходимых для отображения данных
-            var groups = context.Groups.Select(p => new 
+            var groups = context.Groups.Where(q=>!q.SoftDeleted).Select(p => new 
             {
                 p.GroupId,
                 p.GroupName

@@ -11,6 +11,7 @@ namespace StudentHostelApp.Model
         [MaxLength(5)]
         public string RoomNumber { get; set; }
         public byte Seats { get; set; }
+        public bool SoftDeleted { get; set; }
 
         public virtual ICollection<Accomodation> StudentsLink { get; set; }
     }

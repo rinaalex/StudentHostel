@@ -99,6 +99,14 @@
     <Compile Include="Migrations\201902051441429_dateTimeNullUpdate.Designer.cs">
       <DependentUpon>201902051441429_dateTimeNullUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902111257129_addedSoftDeletedToGroup.cs" />
+    <Compile Include="Migrations\201902111257129_addedSoftDeletedToGroup.Designer.cs">
+      <DependentUpon>201902111257129_addedSoftDeletedToGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902130634386_AddedSoftDeletedRoom.cs" />
+    <Compile Include="Migrations\201902130634386_AddedSoftDeletedRoom.Designer.cs">
+      <DependentUpon>201902130634386_AddedSoftDeletedRoom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Accomodation.cs" />
     <Compile Include="Model\Room.cs" />
     <Compile Include="ViewModel\AccomodationListViewModel.cs" />
@@ -217,6 +225,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902051441429_dateTimeNullUpdate.resx">
       <DependentUpon>201902051441429_dateTimeNullUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902111257129_addedSoftDeletedToGroup.resx">
+      <DependentUpon>201902111257129_addedSoftDeletedToGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902130634386_AddedSoftDeletedRoom.resx">
+      <DependentUpon>201902130634386_AddedSoftDeletedRoom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
