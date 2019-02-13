@@ -4,7 +4,7 @@ using StudentHostelApp.Code;
 namespace StudentHostelApp.ViewModel.SingleEntityVM
 {
     /// <summary>
-    /// Предоставляет информацию о размещении для отображения
+    /// Предоставляет информацию о размещении студента в комнате для отображения
     /// </summary>
     public class AccomodationViewModel :BaseViewModel
     {
@@ -45,6 +45,10 @@ namespace StudentHostelApp.ViewModel.SingleEntityVM
             set { this.dateStart = value; OnPropertyChanged(nameof(DateStart)); }
         }
         private DateTime? dateEnd;
-        public DateTime? DateEnd { get { return dateEnd; } set { this.dateEnd = value; OnPropertyChanged(nameof(DateEnd)); } }
+        public DateTime? DateEnd
+        {
+            get { return dateEnd; }
+            set { this.dateEnd = value; OnPropertyChanged(nameof(DateEnd)); }
+        }
     }
 }

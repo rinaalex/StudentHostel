@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace StudentHostelApp.Model
 {
+    /// <summary>
+    /// Предоставляет информацию о комнате
+    /// </summary>
     public class Room
     {
         public int RoomId { get; set; }

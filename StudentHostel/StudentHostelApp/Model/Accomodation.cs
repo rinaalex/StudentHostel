@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentHostelApp.Model
 {
+    /// <summary>
+    /// Предоставляет информацию о размещении студента в комнате
+    /// </summary>
     public class Accomodation
     {
         public int AccomodationId { get; set; }

@@ -1,5 +1,4 @@
-﻿using System;
-using StudentHostelApp.Code;
+﻿using StudentHostelApp.Code;
 
 namespace StudentHostelApp.ViewModel.SingleEntityVM
 {
@@ -27,6 +26,7 @@ namespace StudentHostelApp.ViewModel.SingleEntityVM
             set { this.seats = value; OnPropertyChanged(nameof(Seats)); }
         }
 
+        // Количество свободных мест в комнате
         private int freeSeats;
         public int FreeSeats
         {

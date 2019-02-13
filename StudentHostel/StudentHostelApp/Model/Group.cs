@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace StudentHostelApp.Model
 {
     /// <summary>
-    /// Таблица Группы
+    /// Предоставляет информацию об учебной группе
     /// </summary>
     public class Group
     {
