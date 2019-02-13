@@ -51,7 +51,7 @@
             <Button Content="Добавить" Command="{Binding AddCommand}"/>
             <Button Content="Изменить" Command="{Binding EditCommand}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}"/>
-            <Button Content="Удалить" Command="{Binding DeleteCommand}"/>
+            <Button Content="Удалить" Click="DeleteButton_Click"/>
             <Button Content="Отменить" Command="{Binding CancelCommand}"/>
 
             <TextBlock Text="{Binding ErrorMessage}"></TextBlock>
