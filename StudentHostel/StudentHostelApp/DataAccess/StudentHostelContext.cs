@@ -8,7 +8,7 @@ namespace StudentHostelApp.DataAccess
 {
     public class StudentHostelContext: DbContext
     {
-        public StudentHostelContext():base("StudentHostelDb1")
+        public StudentHostelContext():base("StudentHostelDb")
         {
             Database.SetInitializer<StudentHostelContext>(new StudentHostelDbInitializer());
         }
