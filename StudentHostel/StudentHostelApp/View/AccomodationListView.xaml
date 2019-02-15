@@ -21,8 +21,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Студент" Binding="{Binding StudentName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Комната" Binding="{Binding RoomNo, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата заселения" Binding="{Binding DateStart}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата выселения" Binding="{Binding DateEnd}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата заселения" Binding="{Binding DateStart, StringFormat=\{0:dd.MM.yyyy\}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата выселения" Binding="{Binding DateEnd, StringFormat=\{0:dd.MM.yyyy\}}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
