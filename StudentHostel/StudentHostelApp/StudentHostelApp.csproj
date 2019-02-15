@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="DataAccess\StudentHostelDbInitializer.cs" />
     <Compile Include="Migrations\201901221603054_UpdatedGroups.cs" />
     <Compile Include="Migrations\201901221603054_UpdatedGroups.Designer.cs">
       <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
