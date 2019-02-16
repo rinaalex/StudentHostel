@@ -23,8 +23,8 @@ namespace StudentHostelApp.ViewModel
             set
             {
                 this.currentRoom = value;
+                GetStudentsInRoomList();
                 OnPropertyChanged(nameof(CurrentRoom));
-                OnPropertyChanged(nameof(StudentsInRoomList)); //!!
             }
         }
 
@@ -34,30 +34,12 @@ namespace StudentHostelApp.ViewModel
         {
             get
             {
-                if (CurrentRoom != null)
-                {
-                    try
-                    {
-                        var students = context.Accomodations.Where(p => p.Room.RoomId == CurrentRoom.RoomId && p.DateEnd == null).
-                            Select(q => new StudentViewModel
-                            {
-                                StudentId = q.Student.StudentId,
-                                Name = q.Student.Name
-                            }).ToList();
-                        studentsInRoomList = new ObservableCollection<StudentViewModel>(students);
-                        return studentsInRoomList;
-                    }
-                    catch (Exception e)
-                    {
-                        ErrorMessage = "Невозможно загрузить данные!";
-#if DEBUG
-                        ErrorMessage = e.Message;
-#endif
-                        return null;
-                    }
-                }
-                else
-                    return null;
+                return this.studentsInRoomList;
+            }
+            set
+            {
+                this.studentsInRoomList = value;
+                OnPropertyChanged(nameof(StudentsInRoomList));
             }
         }
 
@@ -108,6 +90,33 @@ namespace StudentHostelApp.ViewModel
 #if DEBUG
                 ErrorMessage = e.Message;
 #endif
+            }
+        }
+
+        /// <summary>
+        /// Выполняет загрузку списка студентов, проживающих в текущей комнате
+        /// </summary>
+        private void GetStudentsInRoomList()
+        {
+            if (CurrentRoom != null)
+            {
+                try
+                {
+                    var students = context.Accomodations.Where(p => p.Room.RoomId == CurrentRoom.RoomId && p.DateEnd == null).
+                        Select(q => new StudentViewModel
+                        {
+                            StudentId = q.Student.StudentId,
+                            Name = q.Student.Name
+                        }).ToList();
+                    StudentsInRoomList = new ObservableCollection<StudentViewModel>(students);
+                }
+                catch (Exception e)
+                {
+                    ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                    ErrorMessage = e.Message;
+#endif
+                }
             }
         }
 
