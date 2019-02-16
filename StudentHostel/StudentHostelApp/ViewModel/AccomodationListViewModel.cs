@@ -55,8 +55,10 @@ namespace StudentHostelApp.ViewModel
         public AccomodationListViewModel()
         {
             GetData();
+            GetStudentsList();
+            GetRoomsList();
 
-            if(AccomodationList.Count!=0)
+            if (AccomodationList.Count!=0)
             {
                 CurrentAccomodation = AccomodationList.First();
             }
@@ -74,47 +76,64 @@ namespace StudentHostelApp.ViewModel
 
         protected override void GetData()
         {
-            // Загрузка списка размещений
-            var accomodations = context.Accomodations.Select(p => new AccomodationViewModel
+            try
             {
-                AccomodationId=p.AccomodationId,
-                StudentId=p.Student.StudentId,
-                StudentName=p.Student.Name,
-                RoomId=p.Room.RoomId,
-                RoomNo=p.Room.RoomNumber,
-                DateStart=p.DateStart,
-                DateEnd=p.DateEnd
-            }).ToList();
+                // Загрузка списка размещений
+                var accomodations = context.Accomodations.Select(p => new AccomodationViewModel
+                {
+                    AccomodationId = p.AccomodationId,
+                    StudentId = p.Student.StudentId,
+                    StudentName = p.Student.Name,
+                    RoomId = p.Room.RoomId,
+                    RoomNo = p.Room.RoomNumber,
+                    DateStart = p.DateStart,
+                    DateEnd = p.DateEnd
+                }).ToList();
 
-            AccomodationList = new ObservableCollection<AccomodationViewModel>(accomodations);
-
-            GetStudentsList();
-            GetRoomsList();
+                AccomodationList = new ObservableCollection<AccomodationViewModel>(accomodations);
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                ErrorMessage = e.Message;
+#endif
+            }
         }
 
         /// <summary>
         /// Выполняет загрузку списка незаселенных студентов
         /// </summary>
         private void GetStudentsList()
-        {            
-            var students = context.Students.Where(s=>!s.SoftDeleted).Select(p => new
+        {
+            try
             {
-                p.StudentId,
-                p.Name,
-                p.RoomsLink
-            }).Where(q => q.RoomsLink.Where(c => c.DateEnd == null).Count() == 0);
-
-            StudentsList = new ObservableCollection<StudentViewModel>();
-
-            foreach (var student in students)
-            {
-                StudentsList.Add(new StudentViewModel
+                var students = context.Students.Where(s => !s.SoftDeleted).Select(p => new
                 {
-                    StudentId = student.StudentId,
-                    Name = student.Name
-                });
+                    p.StudentId,
+                    p.Name,
+                    p.RoomsLink
+                }).Where(q => q.RoomsLink.Where(c => c.DateEnd == null).Count() == 0);
+
+                StudentsList = new ObservableCollection<StudentViewModel>();
+
+                foreach (var student in students)
+                {
+                    StudentsList.Add(new StudentViewModel
+                    {
+                        StudentId = student.StudentId,
+                        Name = student.Name
+                    });
+                }
+                OnPropertyChanged(nameof(StudentsList));
             }
-            OnPropertyChanged(nameof(StudentsList));
+            catch (Exception e)
+            {
+                ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                ErrorMessage = e.Message;
+#endif
+            }
         }
 
         /// <summary>
@@ -122,25 +141,35 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         private void GetRoomsList()
         {
-            var rooms = context.Set<Room>().Where(s=>!s.SoftDeleted).Select(p => new
+            try
             {
-                p.RoomId,
-                p.RoomNumber,
-                p.Seats,
-                p.StudentsLink
-            }).Where(q => q.StudentsLink.Where(c => c.DateEnd == null).Count() < q.Seats);
-
-            RoomsList = new ObservableCollection<RoomViewModel>();
-
-            foreach (var room in rooms)
-            {
-                RoomsList.Add(new RoomViewModel
+                var rooms = context.Set<Room>().Where(s => !s.SoftDeleted).Select(p => new
                 {
-                    RoomId = room.RoomId,
-                    RoomNo = room.RoomNumber
-                });
+                    p.RoomId,
+                    p.RoomNumber,
+                    p.Seats,
+                    p.StudentsLink
+                }).Where(q => q.StudentsLink.Where(c => c.DateEnd == null).Count() < q.Seats);
+
+                RoomsList = new ObservableCollection<RoomViewModel>();
+
+                foreach (var room in rooms)
+                {
+                    RoomsList.Add(new RoomViewModel
+                    {
+                        RoomId = room.RoomId,
+                        RoomNo = room.RoomNumber
+                    });
+                }
+                OnPropertyChanged(nameof(RoomsList));
             }
-            OnPropertyChanged(nameof(RoomsList));
+            catch (Exception e)
+            {
+                ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                ErrorMessage = e.Message;
+#endif
+            }
         }
 
         protected override void Add()
@@ -250,31 +279,51 @@ namespace StudentHostelApp.ViewModel
             {
                 if (IsAdding)
                 {
-                    var student = context.Students.Single(p => p.StudentId == CurrentAccomodation.StudentId);
-                    var room = context.Rooms.Single(p => p.RoomId == CurrentAccomodation.RoomId);
-                    student.RoomsLink.Add(
+                    try
+                    {
+                        var student = context.Students.Single(p => p.StudentId == CurrentAccomodation.StudentId);
+                        var room = context.Rooms.Single(p => p.RoomId == CurrentAccomodation.RoomId);
+                        student.RoomsLink.Add(
 
-                        new Accomodation
-                        {
-                            Student = student,
-                            Room = room,
-                            DateStart = CurrentAccomodation.DateStart
-                        }
-                    );
-                    context.SaveChanges();
-                    IsAdding = false;
+                            new Accomodation
+                            {
+                                Student = student,
+                                Room = room,
+                                DateStart = CurrentAccomodation.DateStart
+                            }
+                        );
+                        context.SaveChanges();
+                        IsAdding = false;
 
-                    //!!!нужно подправить это
-                    CurrentAccomodation.AccomodationId = student.RoomsLink.Where(p => p.Student.StudentId == CurrentAccomodation.StudentId).Select(p => p.AccomodationId).LastOrDefault();
-                    CurrentAccomodation.StudentName = student.Name;
-                    CurrentAccomodation.RoomNo= student.RoomsLink.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).Select(p => p.Room.RoomNumber).LastOrDefault();
+                        //!!!нужно подправить это
+                        CurrentAccomodation.AccomodationId = student.RoomsLink.Where(p => p.Student.StudentId == CurrentAccomodation.StudentId).Select(p => p.AccomodationId).LastOrDefault();
+                        CurrentAccomodation.StudentName = student.Name;
+                        CurrentAccomodation.RoomNo = student.RoomsLink.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).Select(p => p.Room.RoomNumber).LastOrDefault();
+                    }
+                    catch (Exception e)
+                    {
+                        ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                        ErrorMessage = e.Message;
+#endif
+                    }
                 }
                 else if(IsEditing)
                 {
-                    var acc = context.Accomodations.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).SingleOrDefault();
-                    acc.DateEnd = CurrentAccomodation.DateEnd;
-                    context.SaveChanges();
-                    IsEditing = false;
+                    try
+                    {
+                        var acc = context.Accomodations.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).SingleOrDefault();
+                        acc.DateEnd = CurrentAccomodation.DateEnd;
+                        context.SaveChanges();
+                        IsEditing = false;
+                    }
+                    catch (Exception e)
+                    {
+                        ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                        ErrorMessage = e.Message;
+#endif
+                    }
                 }
                 GetRoomsList();
                 GetStudentsList();

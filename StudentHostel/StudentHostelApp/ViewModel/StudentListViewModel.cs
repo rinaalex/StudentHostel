@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
-using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using StudentHostelApp.Code;
 using StudentHostelApp.ViewModel.SingleEntityVM;
 
@@ -42,7 +42,8 @@ namespace StudentHostelApp.ViewModel
         // Конструктор представления модели
         public StudentListViewModel()
         {
-            this.GetData();
+            GetData();
+            GetStudentsList();
 
             if (StudentList.Count == 0)
                 CurrentStudent = null;
@@ -62,31 +63,56 @@ namespace StudentHostelApp.ViewModel
         /// </summary>
         protected override void GetData()
         {
-            //Загрузка необходимых для отображения данных из контекста   
-            var students = context.Students.Where(q=>!q.SoftDeleted).Select(p => new StudentViewModel
+            try
             {
-                StudentId = p.StudentId,
-                Name = p.Name,
-                Phone = p.Phone,
-                Description = p.Description,
-                GroupName = p.Group.GroupName,
-                RoomNo = p.RoomsLink.Select(q => q.Room.RoomNumber).FirstOrDefault().ToString()
-            }).ToList();
+                //Загрузка необходимых для отображения данных из контекста   
+                var students = context.Students.Where(q => !q.SoftDeleted).Select(p => new StudentViewModel
+                {
+                    StudentId = p.StudentId,
+                    Name = p.Name,
+                    Phone = p.Phone,
+                    Description = p.Description,
+                    GroupName = p.Group.GroupName,
+                    RoomNo = p.RoomsLink.Select(q => q.Room.RoomNumber).FirstOrDefault().ToString()
+                }).ToList();
 
-            StudentList = new ObservableCollection<StudentViewModel>(students);
-
-            // Загрузка из контекста необходимых для отображения данных
-            var groups = context.Groups.Where(q=>!q.SoftDeleted).Select(p => new 
+                StudentList = new ObservableCollection<StudentViewModel>(students);
+            }
+            catch (Exception e)
             {
-                p.GroupId,
-                p.GroupName
-            }).ToList().Select(c=>new Group
-            {
-                GroupId=c.GroupId,
-                GroupName=c.GroupName
-            }).ToList();
+                ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                ErrorMessage = e.Message;
+#endif
+            }
+        }
 
-            GroupList = new ObservableCollection<Group>(groups);
+        /// <summary>
+        /// Выполняет загрузку списка учебных групп
+        /// </summary>
+        private void GetStudentsList()
+        {
+            try
+            {
+                var groups = context.Groups.Where(q => !q.SoftDeleted).Select(p => new
+                {
+                    p.GroupId,
+                    p.GroupName
+                }).ToList().Select(c => new Group
+                {
+                    GroupId = c.GroupId,
+                    GroupName = c.GroupName
+                }).ToList();
+
+                GroupList = new ObservableCollection<Group>(groups);
+            }
+            catch(Exception e)
+            {
+                ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                ErrorMessage = e.Message;
+#endif
+            }
         }
 
         #region Методы, определяющие редактирование коллекции
@@ -184,22 +210,42 @@ namespace StudentHostelApp.ViewModel
                 // Сохранение нового объекта
                 if (student.StudentId == 0)
                 {
-                    context.Students.Add(student);
-                    context.SaveChanges();
-                    CurrentStudent.StudentId = context.Students.OrderByDescending(p => p.StudentId).FirstOrDefault().StudentId;
-                    //OnPropertyChanged(nameof(CurrentStudent));
-                    IsAdding = false;
+                    try
+                    {
+                        context.Students.Add(student);
+                        context.SaveChanges();
+                        CurrentStudent.StudentId = context.Students.OrderByDescending(p => p.StudentId).FirstOrDefault().StudentId;
+                        //OnPropertyChanged(nameof(CurrentStudent));
+                        IsAdding = false;
+                    }
+                    catch(DbUpdateException e)
+                    {
+                        ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                        ErrorMessage = e.Message;
+#endif
+                    }
                 }
                 // Сохранение изменений в существующум объекте
                 else
                 {
-                    var result = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).FirstOrDefault();
-                    result.Name = student.Name;
-                    result.Phone = student.Phone;
-                    result.Description = student.Description;
-                    result.Group = student.Group;
-                    context.SaveChanges();
-                    IsEditing = false;
+                    try
+                    {
+                        var result = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).FirstOrDefault();
+                        result.Name = student.Name;
+                        result.Phone = student.Phone;
+                        result.Description = student.Description;
+                        result.Group = student.Group;
+                        context.SaveChanges();
+                        IsEditing = false;
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                        ErrorMessage = e.Message;
+#endif
+                    }
                 }
             }
         }
@@ -208,21 +254,31 @@ namespace StudentHostelApp.ViewModel
         {
             if (CurrentStudent != null)
             {
-                var student = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).SingleOrDefault();
-                // Помечаем объект как удаленный
-                student.SoftDeleted = true;
-                
-                // Определяем, есть ли у удаляемого студента незавершенные размещения
-                var accomodation = context.Accomodations.Where(p => p.Student.StudentId == CurrentStudent.StudentId && p.DateEnd == null).SingleOrDefault();
-                if (accomodation != null)
+                try
                 {
-                    // Завершаем размещение
-                    accomodation.DateEnd = DateTime.Now;
+                    var student = context.Students.Where(p => p.StudentId == CurrentStudent.StudentId).SingleOrDefault();
+                    // Помечаем объект как удаленный
+                    student.SoftDeleted = true;
+
+                    // Определяем, есть ли у удаляемого студента незавершенные размещения
+                    var accomodation = context.Accomodations.Where(p => p.Student.StudentId == CurrentStudent.StudentId && p.DateEnd == null).SingleOrDefault();
+                    if (accomodation != null)
+                    {
+                        // Завершаем размещение
+                        accomodation.DateEnd = DateTime.Now;
+                    }
+
+                    StudentList.Remove(CurrentStudent);
+                    context.SaveChanges();
+                    ErrorMessage = string.Empty;
                 }
-                                
-                StudentList.Remove(CurrentStudent);
-                context.SaveChanges();
-                ErrorMessage = string.Empty;
+                catch (DbUpdateException e)
+                {
+                    ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                    ErrorMessage = e.Message;
+#endif
+                }
             }
             else
                 ErrorMessage = "Не выбран объект для удаления.";

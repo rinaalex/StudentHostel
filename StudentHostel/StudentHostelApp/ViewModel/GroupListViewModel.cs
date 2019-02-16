@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 using StudentHostelApp.Model;
 using StudentHostelApp.Commands;
 using StudentHostelApp.ViewModel.SingleEntityVM;
@@ -52,14 +54,24 @@ namespace StudentHostelApp.ViewModel
 
         protected override void GetData()
         {
-            // Загрузка из контекста необходимых для отображения данных
-            var groups = context.Groups.Where(q=>!q.SoftDeleted).Select(p => new GroupViewModel
+            try
             {
-                GroupId = p.GroupId,
-                GroupName = p.GroupName
-            }).ToList();
+                // Загрузка из контекста необходимых для отображения данных
+                var groups = context.Groups.Where(q => !q.SoftDeleted).Select(p => new GroupViewModel
+                {
+                    GroupId = p.GroupId,
+                    GroupName = p.GroupName
+                }).ToList();
 
-            GroupList = new ObservableCollection<GroupViewModel>(groups);           
+                GroupList = new ObservableCollection<GroupViewModel>(groups);
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = "Невозможно загрузить данные!";
+#if DEBUG
+                ErrorMessage = e.Message;
+#endif
+            }
         }        
 
         #region Свойства и методы для редактирвания коллекции
@@ -124,18 +136,38 @@ namespace StudentHostelApp.ViewModel
                         GroupId = CurrentGroup.GroupId,
                         GroupName = CurrentGroup.GroupName
                     };
-                    context.Groups.Add(group);
-                    context.SaveChanges();
-                    CurrentGroup.GroupId = context.Groups.OrderByDescending(p => p.GroupId).FirstOrDefault().GroupId;
-                    IsAdding = false;
+                    try
+                    {
+                        context.Groups.Add(group);
+                        context.SaveChanges();
+                        CurrentGroup.GroupId = context.Groups.OrderByDescending(p => p.GroupId).FirstOrDefault().GroupId;
+                        IsAdding = false;
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                        ErrorMessage = e.Message;
+#endif
+                    }                    
                 }
                 // Сохранение изменений в текущем объекте
                 else
                 {
-                    var result = context.Groups.Where(p => p.GroupId == oldGroup.GroupId).FirstOrDefault();
-                    result.GroupName = CurrentGroup.GroupName;
-                    context.SaveChanges();
-                    IsEditing = false;
+                    try
+                    {
+                        var result = context.Groups.Where(p => p.GroupId == oldGroup.GroupId).FirstOrDefault();
+                        result.GroupName = CurrentGroup.GroupName;
+                        context.SaveChanges();
+                        IsEditing = false;
+                    }
+                    catch (DbUpdateException e)
+                    {
+                        ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                        ErrorMessage = e.Message;
+#endif
+                    }
                 }
             }
         }
@@ -144,11 +176,21 @@ namespace StudentHostelApp.ViewModel
         {
             if (CurrentGroup != null)
             {
-                var group = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
-                GroupList.Remove(CurrentGroup);
-                group.SoftDeleted = true;
-                context.SaveChanges();
-                ErrorMessage = string.Empty;
+                try
+                {
+                    var group = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
+                    GroupList.Remove(CurrentGroup);
+                    group.SoftDeleted = true;
+                    context.SaveChanges();
+                    ErrorMessage = string.Empty;
+                }
+                catch(DbUpdateException e)
+                {
+                    ErrorMessage = "Невозможно выполнить операцию!";
+#if DEBUG
+                    ErrorMessage = e.Message;
+#endif
+                }
             }
             else
                 ErrorMessage = "Не выбран объект для удаления!";
