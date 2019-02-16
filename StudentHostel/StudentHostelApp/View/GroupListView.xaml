@@ -5,30 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
         mc:Ignorable="d"
-        Title="Список учебных групп" Height="450" Width="800" Closing="Window_Closing">
+        Title="Список учебных групп" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" Grid.Column="0" AutoGenerateColumns="false" ColumnWidth="*" IsReadOnly="True" 
-                  CanUserDeleteRows="False" CanUserAddRows="False" IsEnabled="{Binding IsBrowsing}"
+
+        <DataGrid x:Name="dataGrid" Grid.Column="0" Grid.RowSpan="2"
+                  IsEnabled="{Binding IsBrowsing}"
                   ItemsSource="{Binding GroupList, Mode=OneWay}" 
-                  SelectedItem="{Binding CurrentGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                  SelectedItem="{Binding CurrentGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Учебная группа" Binding="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Column="1">
-            <TextBlock Text="Название учебной группы:"></TextBlock>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Style="{StaticResource StackPanelStyle}">
+            <TextBlock Text="Название учебной группы:" Style="{StaticResource TextBlockStyle}"></TextBlock>
             <TextBox Text="{Binding CurrentGroup.GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     IsEnabled="{Binding IsAddingOrEditing}"></TextBox>
-            <Button Content="Добавить" Command="{Binding AddCommand}"></Button>
-            <Button Content="Изменить" Command="{Binding EditCommand}"></Button>
-            <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}"></Button>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}"></Button>
-            <Button Content="Отменить" Command="{Binding CancelCommand}"></Button>
-            <TextBlock Text="{Binding ErrorMessage}"></TextBlock>
+                     IsEnabled="{Binding IsAddingOrEditing}"
+                     Style="{StaticResource TextBoxStyle}"></TextBox>
+            <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"></Button>
+            <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"></Button>
+            <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"></Button>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"></Button>
+            <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"></Button>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

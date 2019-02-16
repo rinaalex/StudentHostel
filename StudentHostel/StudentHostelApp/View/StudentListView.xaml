@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
         mc:Ignorable="d"
-        Title="Список студентов" Height="450" Width="800" Closing="Window_Closing">
+        Title="Список студентов" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -16,7 +16,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="dataGrid" Grid.Row="0" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True"
+        <DataGrid x:Name="dataGrid" Grid.Row="0" Style="{StaticResource DataGridStyle}"
                   ItemsSource="{Binding StudentList, Mode=OneWay}" IsEnabled="{Binding IsBrowsing}"
                   SelectedItem="{Binding CurrentStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Margin="0,0,0.334,0.333">
             <DataGrid.Columns>
@@ -28,33 +28,34 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBlock TextWrapping="Wrap" Text="ФИО:" />
+        <StackPanel Grid.Column="0" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+            <TextBlock TextWrapping="Wrap" Text="ФИО:" Style="{StaticResource TextBlockStyle}"/>
             <TextBox Text="{Binding CurrentStudent.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                     IsEnabled="{Binding IsAddingOrEditing}"/>
-            <TextBlock TextWrapping="Wrap" Text="Телефон:" />
+                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource TextBoxStyle}"/>
+            <TextBlock TextWrapping="Wrap" Text="Телефон:" Style="{StaticResource TextBlockStyle}"/>
             <TextBox TextWrapping="Wrap" Text="{Binding CurrentStudent.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     IsEnabled="{Binding IsAddingOrEditing}"/>
-            <TextBlock TextWrapping="Wrap" Text="Комментарий:" />
+                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource TextBoxStyle}"/>
+            <TextBlock TextWrapping="Wrap" Text="Комментарий:" Style="{StaticResource TextBlockStyle}"/>
             <TextBox TextWrapping="Wrap" Text="{Binding CurrentStudent.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     IsEnabled="{Binding IsAddingOrEditing}"/>
-            <TextBlock TextWrapping="Wrap" Text="Учебная группа:"/>
+                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource TextBoxStyle}"/>
+            <TextBlock TextWrapping="Wrap" Text="Учебная группа:" Style="{StaticResource TextBlockStyle}"/>
             <ComboBox 
                   ItemsSource="{Binding GroupList}" 
                   DisplayMemberPath="GroupName" 
                   SelectedValue="{Binding CurrentStudent.GroupName, UpdateSourceTrigger=PropertyChanged}"
                   SelectedValuePath ="GroupName" 
                   IsEnabled="{Binding IsAddingOrEditing}"
+                Style="{StaticResource ComboBoxStyle}"
             />
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <Button Content="Добавить" Command="{Binding AddCommand}"/>
-            <Button Content="Изменить" Command="{Binding EditCommand}"/>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}"/>
-            <Button Content="Удалить" Click="DeleteButton_Click"/>
-            <Button Content="Отменить" Command="{Binding CancelCommand}"/>
-
-            <TextBlock Text="{Binding ErrorMessage}"></TextBlock>
+        
+        <StackPanel Grid.Column="1" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+            <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

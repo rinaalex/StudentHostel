@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
         mc:Ignorable="d"
-        Title="AccomodationView" Height="450" Width="800" Closing="Window_Closing">
+        Title="Список размещений" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -16,40 +16,43 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" Grid.Row="0" Grid.ColumnSpan="2" ColumnWidth="*"
-                  ItemsSource="{Binding AccomodationList}" SelectedItem="{Binding CurrentAccomodation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <DataGrid x:Name="dataGrid" Grid.Row="0" Grid.ColumnSpan="2" 
+                  ItemsSource="{Binding AccomodationList}" 
+                  SelectedItem="{Binding CurrentAccomodation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding IsBrowsing}"
+                  Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Студент" Binding="{Binding StudentName, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Комната" Binding="{Binding RoomNo, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата заселения" Binding="{Binding DateStart, StringFormat=\{0:dd.MM.yyyy\}}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата выселения" Binding="{Binding DateEnd, StringFormat=\{0:dd.MM.yyyy\}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Студент" Binding="{Binding StudentName, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Комната" Binding="{Binding RoomNo, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Дата заселения" Binding="{Binding DateStart, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                <DataGridTextColumn Header="Дата выселения" Binding="{Binding DateEnd, StringFormat=\{0:dd.MM.yyyy\}}"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
+        <StackPanel Grid.Column="0" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
             <ComboBox ItemsSource="{Binding StudentsList}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="StudentId"
                       SelectedValue="{Binding CurrentAccomodation.StudentId, UpdateSourceTrigger=PropertyChanged}"
-                      IsEnabled="{Binding IsAdding}">
-            </ComboBox>
+                      IsEnabled="{Binding IsAdding}"
+                      Style="{StaticResource ComboBoxStyle}"/>
             <ComboBox ItemsSource="{Binding RoomsList}"
                       DisplayMemberPath="RoomNo"
                       SelectedValuePath="RoomId"
                       SelectedValue="{Binding CurrentAccomodation.RoomId, UpdateSourceTrigger=PropertyChanged}"
-                      IsEnabled="{Binding IsAdding}">
-            </ComboBox>
+                      IsEnabled="{Binding IsAdding}"
+                      Style="{StaticResource ComboBoxStyle}"/>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateStart, Mode=TwoWay}"
-                        IsEnabled="{Binding IsAdding}"></DatePicker>
+                        IsEnabled="{Binding IsAdding}" Style="{StaticResource DatePickerStyle}"/>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateEnd, Mode=TwoWay}"
-                        IsEnabled="{Binding IsEditing}"></DatePicker>
+                        IsEnabled="{Binding IsEditing}" Style="{StaticResource DatePickerStyle}"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <Button Content="Добавить" Command="{Binding AddCommand}"></Button>
-            <Button Content="Изменить" Command="{Binding EditCommand}"></Button>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}"></Button>
-            <Button Content="Отменить" Command="{Binding CancelCommand}"></Button>
-            <TextBlock Text="{Binding ErrorMessage}"></TextBlock>
+        <StackPanel Grid.Column="1" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+            <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"/>
         </StackPanel>
 
     </Grid>

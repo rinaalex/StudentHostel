@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
         mc:Ignorable="d"
-        Title="Список комнат" Height="450" Width="800" Closing="Window_Closing">
+        Title="Список комнат" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -16,39 +16,42 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" AutoGenerateColumns="False" ColumnWidth="*"
+        <DataGrid Grid.Column="0" Grid.Row="0" Grid.RowSpan="1" IsEnabled="{Binding IsBrowsing}"
                   ItemsSource="{Binding RoomsList, Mode=OneWay}" SelectedItem="{Binding CurrentRoom, Mode=TwoWay}"
-                  CanUserAddRows="False" CanUserDeleteRows="False">
+                  Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Номер комнаты" Binding="{Binding RoomNo}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Количество мест" Binding="{Binding Seats}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Количество свободных мест" Binding="{Binding FreeSeats}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Номер комнаты" Binding="{Binding RoomNo}"/>
+                <DataGridTextColumn Header="Вместимость" Binding="{Binding Seats}"/>
+                <DataGridTextColumn Header="Свободные места" Binding="{Binding FreeSeats}"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Column="1" Grid.Row="0" Grid.RowSpan="1" AutoGenerateColumns="False" ColumnWidth="*"
+        <DataGrid Grid.Column="1" Grid.Row="0" Grid.RowSpan="1" 
                   ItemsSource="{Binding StudentsInRoomList}" IsEnabled="{Binding IsBrowsing}"
-                  CanUserAddRows="False" CanUserDeleteRows="False">
+                  Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding Name}"></DataGridTextColumn>
-            </DataGrid.Columns>
-            
+                <DataGridTextColumn Header="ФИО проживающего" Binding="{Binding Name}"/>
+            </DataGrid.Columns>            
         </DataGrid>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBlock Text="Номер комнаты"></TextBlock>
-            <TextBox Text="{Binding CurrentRoom.RoomNo, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBlock Text="Вместимость:"></TextBlock>
-            <TextBox Text="{Binding CurrentRoom.Seats, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <Button Content="Добавить" Command="{Binding AddCommand}"></Button>
-            <Button Content="Изменить" Command="{Binding EditCommand}"></Button>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}"></Button>
-            <Button Content="Отменить" Command="{Binding CancelCommand}"></Button>
-            <Button Content="Удалить" Click="DeleteButton_Click"></Button>
-            <TextBlock Text="{Binding ErrorMessage}"></TextBlock>
+        <StackPanel Grid.Column="0" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+            <TextBlock Text="Номер комнаты" Style="{StaticResource TextBlockStyle}"/>
+            <TextBox Text="{Binding CurrentRoom.RoomNo, UpdateSourceTrigger=PropertyChanged}" 
+                     IsEnabled="{Binding IsAddingOrEditing}"
+                     Style="{StaticResource TextBoxStyle}"/>
+            <TextBlock Text="Вместимость:" Style="{StaticResource TextBlockStyle}"></TextBlock>
+            <TextBox Text="{Binding CurrentRoom.Seats, UpdateSourceTrigger=PropertyChanged}" 
+                     IsEnabled="{Binding IsAddingOrEditing}"
+                     Style="{StaticResource TextBoxStyle}"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            
+        
+        <StackPanel Grid.Column="1" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+            <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"/>
         </StackPanel>
 
     </Grid>
