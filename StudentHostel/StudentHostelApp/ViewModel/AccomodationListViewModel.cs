@@ -59,7 +59,11 @@ namespace StudentHostelApp.ViewModel
             GetStudentsList();
             GetRoomsList();
 
-            if (AccomodationList.Count==0)
+            if(AccomodationList==null)
+            {
+                CurrentAccomodation = null;
+            }
+            else if (AccomodationList.Count==0)
             {
                 CurrentAccomodation = null;
             }

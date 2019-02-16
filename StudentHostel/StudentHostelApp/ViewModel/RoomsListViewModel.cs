@@ -48,7 +48,11 @@ namespace StudentHostelApp.ViewModel
         {
             GetData();
 
-            if(RoomsList.Count==0)
+            if (RoomsList==null)
+            {
+                CurrentRoom = null;
+            }
+            else if(RoomsList.Count==0)
             {
                 CurrentRoom = null;
             }

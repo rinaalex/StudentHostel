@@ -36,7 +36,11 @@ namespace StudentHostelApp.ViewModel
         {
             GetData();
 
-            if (GroupList.Count == 0)
+            if (GroupList == null)
+            {
+                CurrentGroup = null;
+            }
+            else if (GroupList.Count==0)
             {
                 CurrentGroup = null;
             }
@@ -64,7 +68,10 @@ namespace StudentHostelApp.ViewModel
                     GroupName = p.GroupName
                 }).ToList();
 
-                GroupList = new ObservableCollection<GroupViewModel>(groups);
+                if (groups != null)
+                    GroupList = new ObservableCollection<GroupViewModel>(groups);
+                else
+                    GroupList = new ObservableCollection<GroupViewModel>();
             }
             catch (Exception e)
             {
