@@ -24,7 +24,7 @@ namespace StudentHostelApp.ViewModel
             {
                 this.currentRoom = value;
                 OnPropertyChanged(nameof(CurrentRoom));
-                OnPropertyChanged(nameof(StudentsInRoomList));
+                OnPropertyChanged(nameof(StudentsInRoomList)); //!!
             }
         }
 
@@ -65,12 +65,21 @@ namespace StudentHostelApp.ViewModel
         {
             GetData();
 
+            if(RoomsList.Count==0)
+            {
+                CurrentRoom = null;
+            }
+            else
+            {
+                CurrentRoom = RoomsList.First(); 
+            }
+
             // Инициализация команд
-            AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
-            EditCommand=new Command(Edit, () => { return !(IsAdding || IsEditing); });
-            SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
-            CancelCommand = new Command(DiscardChanges, () => { return IsAdding || IsEditing; });
-            DeleteCommand = new Command(Delete, () => { return !(IsAdding || IsEditing) && canDelete; });
+            AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing) && context != null; });
+            EditCommand=new Command(Edit, () => { return !(IsAdding || IsEditing) && context != null; });
+            SaveCommand = new Command(SaveChanges, () => { return (IsAdding || IsEditing) && context != null; });
+            CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing) && context != null; });
+            DeleteCommand = new Command(Delete, () => { return !(IsAdding || IsEditing) && canDelete && context != null; });
         }
 
         protected override void GetData()

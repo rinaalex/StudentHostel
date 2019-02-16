@@ -58,20 +58,20 @@ namespace StudentHostelApp.ViewModel
             GetStudentsList();
             GetRoomsList();
 
-            if (AccomodationList.Count!=0)
-            {
-                CurrentAccomodation = AccomodationList.First();
-            }
-            else
+            if (AccomodationList.Count==0)
             {
                 CurrentAccomodation = null;
             }
+            else
+            {
+                CurrentAccomodation = AccomodationList.First(); 
+            }
 
             // Инициализация команд
-            AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
-            SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
-            CancelCommand = new Command(DiscardChanges, () => { return IsAdding || IsEditing; });
-            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing)&&isEditable; });
+            AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing) && context != null; });
+            SaveCommand = new Command(SaveChanges, () => { return (IsAdding || IsEditing) && context != null; });
+            CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing) && context != null; });
+            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing)&&isEditable && context != null; });
         }
 
         protected override void GetData()
