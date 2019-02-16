@@ -45,11 +45,11 @@ namespace StudentHostelApp.ViewModel
             }
 
             // Инициализация команд
-            AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing); });
-            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing); });
-            SaveCommand = new Command(SaveChanges, () => { return IsAdding || IsEditing; });
-            DeleteCommand = new Command(Delete, () => { return !(IsAdding || IsEditing); });
-            CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing); });
+            AddCommand = new Command(Add, () => { return !(IsAdding || IsEditing)&&context != null; });
+            EditCommand = new Command(Edit, () => { return !(IsAdding || IsEditing)&& context != null; });
+            SaveCommand = new Command(SaveChanges, () => { return (IsAdding || IsEditing) && context != null;});
+            DeleteCommand = new Command(Delete, () => { return !(IsAdding || IsEditing) && context != null; });
+            CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing) && context != null; });
         }
 
         protected override void GetData()
