@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using StudentHostelApp.ViewModel;
+using StudentHostelApp.DataAccess;
 
 namespace StudentHostelApp.View
 {
@@ -20,7 +21,7 @@ namespace StudentHostelApp.View
     /// </summary>
     public partial class StudentListView : Window
     {
-        StudentListViewModel viewModel = new StudentListViewModel();
+        StudentListViewModel viewModel = new StudentListViewModel(new StudentHostelContext());
         public StudentListView()
         {
             InitializeComponent();

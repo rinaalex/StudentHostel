@@ -6,6 +6,7 @@ using StudentHostelApp.Code;
 using StudentHostelApp.Commands;
 using StudentHostelApp.ViewModel.SingleEntityVM;
 using StudentHostelApp.Model;
+using StudentHostelApp.DataAccess;
 
 namespace StudentHostelApp.ViewModel
 {
@@ -43,7 +44,7 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
-        public RoomsListViewModel()
+        public RoomsListViewModel(StudentHostelContext context):base(context)
         {
             GetData();
 

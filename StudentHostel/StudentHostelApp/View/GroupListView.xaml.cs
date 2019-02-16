@@ -20,7 +20,7 @@ namespace StudentHostelApp.View
     /// </summary>
     public partial class GroupListView : Window
     {
-        GroupListViewModel viewModel = new GroupListViewModel();
+        GroupListViewModel viewModel = new GroupListViewModel(new DataAccess.StudentHostelContext());
 
         public GroupListView()
         {

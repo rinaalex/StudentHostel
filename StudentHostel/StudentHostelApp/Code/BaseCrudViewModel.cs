@@ -9,7 +9,7 @@ namespace StudentHostelApp.Code
     /// </summary>
     public class BaseCrudViewModel:INotifyPropertyChanged
     {
-        protected StudentHostelContext context = new StudentHostelContext();
+        protected readonly StudentHostelContext context;// = new StudentHostelContext();
 
         // Команды для взаимодействия с коллекцией объектов
         public Command AddCommand { get; protected set; }
@@ -18,9 +18,14 @@ namespace StudentHostelApp.Code
         public Command DeleteCommand { get; protected set; }
         public Command CancelCommand { get; protected set; }
 
-        // Конструктор представления модели
-        public BaseCrudViewModel()
+
+        /// <summary>
+        /// Конструктор представления модели
+        /// </summary>
+        /// <param name="context">Контекст данных</param>
+        public BaseCrudViewModel(StudentHostelContext context)
         {
+            this.context = context;
         }
 
         /// <summary>
