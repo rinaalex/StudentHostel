@@ -13,10 +13,10 @@ namespace StudentHostelApp.DataAccess
             Database.SetInitializer<StudentHostelContext>(new StudentHostelDbInitializer());
         }
 
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<Accomodation> Accomodations { get; set; }
-        public DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Accomodation> Accomodations { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
