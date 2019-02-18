@@ -79,26 +79,45 @@ namespace UnitTestStudentHostel
             viewModel.AddCommand.Execute("");
             viewModel.CurrentGroup = new GroupViewModel{ GroupId = 0, GroupName = "00" };
             viewModel.SaveCommand.Execute("");
-            Assert.AreEqual(viewModel.GroupList.Count, count + 1);
-            Assert.AreEqual(viewModel.CurrentGroup.GroupName, "00");
+            Assert.AreEqual(count + 1, viewModel.GroupList.Count);
+            Assert.AreEqual("00", viewModel.CurrentGroup.GroupName);
         }
 
         [TestMethod]
-        public void TestEffort()
+        public void AddGroupEffort()
         {
             var connection = DbConnectionFactory.CreateTransient();
             var context = new StudentHostelContext(connection);
 
             GroupListViewModel viewModel = new GroupListViewModel(context);
+            int count = viewModel.GroupList.Count;
             viewModel.AddCommand.Execute("");
             viewModel.CurrentGroup = new GroupViewModel { GroupId = 0, GroupName = "Test" };
             viewModel.SaveCommand.Execute("");
 
-            var groups = viewModel.GroupList;
+            var group = context.Groups.Where(p => p.GroupId == count + 1).FirstOrDefault();
 
-            Assert.AreEqual(viewModel.GroupList.Count, 1);
-            Assert.AreEqual(groups[0].GroupId, 1);
-            Assert.AreEqual(groups[0].GroupName, "Test");
+            Assert.AreEqual(count+1, viewModel.GroupList.Count);
+            Assert.AreEqual(count+1, group.GroupId);
+            Assert.AreEqual("Test", group.GroupName);
+        }
+
+        [TestMethod]
+        public void EditGroupEffort()
+        {
+            var connection = DbConnectionFactory.CreateTransient();
+            var context = new StudentHostelContext(connection);
+
+            GroupListViewModel viewModel = new GroupListViewModel(context);
+            
+            viewModel.CurrentGroup = viewModel.GroupList.Where(p => p.GroupId == 1).FirstOrDefault();
+            viewModel.EditCommand.Execute("");
+            viewModel.CurrentGroup.GroupName = "NewName";
+            viewModel.SaveCommand.Execute("");
+
+            Group group = context.Groups.Where(p => p.GroupId == 1).FirstOrDefault();
+
+            Assert.AreEqual(group.GroupName, viewModel.CurrentGroup.GroupName);
         }
     }
 }
