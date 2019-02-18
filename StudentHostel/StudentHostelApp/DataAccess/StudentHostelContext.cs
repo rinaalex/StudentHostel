@@ -2,7 +2,8 @@
 using System.Data.Entity;
 using System.Linq;
 using StudentHostelApp.Model;
-
+using Effort;
+using System.Data.Common;
 
 namespace StudentHostelApp.DataAccess
 {
@@ -11,6 +12,11 @@ namespace StudentHostelApp.DataAccess
         public StudentHostelContext():base("StudentHostelDb")
         {
             Database.SetInitializer<StudentHostelContext>(new StudentHostelDbInitializer());
+        }
+
+        public StudentHostelContext(DbConnection connection):base(connection, false)
+        {
+
         }
 
         public virtual DbSet<Student> Students { get; set; }
