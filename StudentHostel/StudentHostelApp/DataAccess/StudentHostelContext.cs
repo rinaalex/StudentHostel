@@ -16,7 +16,7 @@ namespace StudentHostelApp.DataAccess
 
         public StudentHostelContext(DbConnection connection):base(connection, false)
         {
-
+            Database.SetInitializer<StudentHostelContext>(new StudentHostelDbInitializer());
         }
 
         public virtual DbSet<Student> Students { get; set; }
