@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Data.Common;
-using Effort;
+﻿using Effort;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
@@ -17,13 +14,18 @@ namespace UnitTestStudentHostel
     [TestClass]
     public class UnitTestGroupsListViewModel
     {
+        /// <summary>
+        /// Выполняет проверку правильности загрузки данных из таблицы Groups
+        /// (только группы, не помеченные как удаленные)
+        /// </summary>
         [TestMethod]
         public void GetAllGroupsMock()
         {
             var data = new List<Group>
             {
                 new Group {GroupId=1, GroupName="Test", SoftDeleted=false},
-                new Group{GroupId=2, GroupName="Another", SoftDeleted=false}
+                new Group {GroupId=2, GroupName="Another", SoftDeleted=false},
+                new Group{GroupId=3, GroupName="Deleted", SoftDeleted=true}
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Group>>();
@@ -42,6 +44,9 @@ namespace UnitTestStudentHostel
             Assert.AreEqual("Another", groups[1].GroupName);            
         }
 
+        /// <summary>
+        /// Выполняет проверку добавления новой записи в таблицу Groups
+        /// </summary>
         [TestMethod]
         public void AddGroupMock()
         {
@@ -66,23 +71,27 @@ namespace UnitTestStudentHostel
             viewModel.SaveCommand.Execute("");
 
             var groups = viewModel.GroupList;
+
             Assert.AreEqual(3, groups.Count);
             Assert.AreEqual("NewTest", groups[2].GroupName);
         }
 
-        [TestMethod]
-        public void AddGroup()
-        {
-            StudentHostelContext context = new StudentHostelContext();
-            GroupListViewModel viewModel = new GroupListViewModel(context);
-            int count = viewModel.GroupList.Count;
-            viewModel.AddCommand.Execute("");
-            viewModel.CurrentGroup = new GroupViewModel{ GroupId = 0, GroupName = "00" };
-            viewModel.SaveCommand.Execute("");
-            Assert.AreEqual(count + 1, viewModel.GroupList.Count);
-            Assert.AreEqual("00", viewModel.CurrentGroup.GroupName);
-        }
+        //[TestMethod]
+        //public void AddGroup()
+        //{
+        //    StudentHostelContext context = new StudentHostelContext();
+        //    GroupListViewModel viewModel = new GroupListViewModel(context);
+        //    int count = viewModel.GroupList.Count;
+        //    viewModel.AddCommand.Execute("");
+        //    viewModel.CurrentGroup = new GroupViewModel{ GroupId = 0, GroupName = "00" };
+        //    viewModel.SaveCommand.Execute("");
+        //    Assert.AreEqual(count + 1, viewModel.GroupList.Count);
+        //    Assert.AreEqual("00", viewModel.CurrentGroup.GroupName);
+        //}
 
+        /// <summary>
+        /// Выполняет проверку добавления новой записи в таблицу Groups
+        /// </summary>
         [TestMethod]
         public void AddGroupEffort()
         {
@@ -97,11 +106,19 @@ namespace UnitTestStudentHostel
 
             var group = context.Groups.Where(p => p.GroupId == count + 1).FirstOrDefault();
 
+            Assert.AreEqual(count + 1, context.Groups.Count());
             Assert.AreEqual(count+1, viewModel.GroupList.Count);
+
             Assert.AreEqual(count+1, group.GroupId);
+            Assert.AreEqual(count + 1, viewModel.GroupList[count].GroupId);
+
             Assert.AreEqual("Test", group.GroupName);
+            Assert.AreEqual("Test", viewModel.GroupList[count].GroupName);
         }
 
+        /// <summary>
+        /// Выпоняет проверку изменения записи в таблице Groups
+        /// </summary>
         [TestMethod]
         public void EditGroupEffort()
         {
@@ -117,7 +134,9 @@ namespace UnitTestStudentHostel
 
             Group group = context.Groups.Where(p => p.GroupId == 1).FirstOrDefault();
 
-            Assert.AreEqual(group.GroupName, viewModel.CurrentGroup.GroupName);
+            Assert.AreEqual("NewName", group.GroupName);
+            Assert.AreEqual("NewName", viewModel.CurrentGroup.GroupName);
+            Assert.AreEqual("NewName", viewModel.GroupList[0].GroupName);
         }
     }
 }
