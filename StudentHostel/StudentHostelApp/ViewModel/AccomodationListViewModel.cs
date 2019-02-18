@@ -304,6 +304,7 @@ namespace StudentHostelApp.ViewModel
                         CurrentAccomodation.AccomodationId = student.RoomsLink.Where(p => p.Student.StudentId == CurrentAccomodation.StudentId).Select(p => p.AccomodationId).LastOrDefault();
                         CurrentAccomodation.StudentName = student.Name;
                         CurrentAccomodation.RoomNo = student.RoomsLink.Where(p => p.AccomodationId == CurrentAccomodation.AccomodationId).Select(p => p.Room.RoomNumber).LastOrDefault();
+                        AccomodationList[AccomodationList.Count - 1] = CurrentAccomodation;
                     }
                     catch (Exception e)
                     {

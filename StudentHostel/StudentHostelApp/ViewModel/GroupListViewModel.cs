@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Data.Entity;
 using System.Collections.ObjectModel;
 using System.Data.Entity.Infrastructure;
 using StudentHostelApp.Model;
@@ -7,6 +8,7 @@ using StudentHostelApp.Commands;
 using StudentHostelApp.ViewModel.SingleEntityVM;
 using StudentHostelApp.Code;
 using StudentHostelApp.DataAccess;
+
 
 namespace StudentHostelApp.ViewModel
 {
@@ -142,13 +144,15 @@ namespace StudentHostelApp.ViewModel
                     Group group = new Group
                     {
                         GroupId = CurrentGroup.GroupId,
-                        GroupName = CurrentGroup.GroupName
+                        GroupName = CurrentGroup.GroupName,
+                        SoftDeleted = false
                     };
                     try
                     {
                         context.Groups.Add(group);
-                        context.SaveChanges();
+                        int count = context.SaveChanges();                    
                         CurrentGroup.GroupId = context.Groups.OrderByDescending(p => p.GroupId).FirstOrDefault().GroupId;
+                        GroupList[GroupList.Count - 1] = CurrentGroup;
                         IsAdding = false;
                     }
                     catch (DbUpdateException e)

@@ -217,7 +217,7 @@ namespace StudentHostelApp.ViewModel
                         context.Students.Add(student);
                         context.SaveChanges();
                         CurrentStudent.StudentId = context.Students.OrderByDescending(p => p.StudentId).FirstOrDefault().StudentId;
-                        //OnPropertyChanged(nameof(CurrentStudent));
+                        StudentList[StudentList.Count - 1] = CurrentStudent;
                         IsAdding = false;
                     }
                     catch(DbUpdateException e)

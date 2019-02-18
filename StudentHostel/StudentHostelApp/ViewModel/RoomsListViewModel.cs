@@ -193,6 +193,7 @@ namespace StudentHostelApp.ViewModel
                         context.Rooms.Add(room);
                         context.SaveChanges();
                         CurrentRoom.FreeSeats = CurrentRoom.Seats;
+                        RoomsList[RoomsList.Count - 1] = CurrentRoom;
                         IsAdding = false;
                         ErrorMessage = string.Empty;
                     }
