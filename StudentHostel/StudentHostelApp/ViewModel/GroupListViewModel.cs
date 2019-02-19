@@ -190,11 +190,22 @@ namespace StudentHostelApp.ViewModel
             {
                 try
                 {
-                    var group = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
-                    GroupList.Remove(CurrentGroup);
-                    group.SoftDeleted = true;
-                    context.SaveChanges();
-                    ErrorMessage = string.Empty;
+                    // Проверяем, есть ли проживающие студенты, числящиеся в удаляемой группе
+                    var students = context.Accomodations.Where(p => p.Student.Group.GroupId == CurrentGroup.GroupId && p.DateEnd == null);
+                    int count = students.Count();
+                    if (count == 0)
+                    {
+
+                        var group = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
+                        GroupList.Remove(CurrentGroup);
+                        group.SoftDeleted = true;
+                        context.SaveChanges();
+                        ErrorMessage = string.Empty;
+                    }
+                    else
+                    {
+                        ErrorMessage = "Невозможно удалить информацию о группе, в которой числятся проживающие студенты!";
+                    }
                 }
                 catch(DbUpdateException e)
                 {
