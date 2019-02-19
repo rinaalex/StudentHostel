@@ -97,21 +97,25 @@ namespace UnitTestStudentHostel
         {
             var connection = DbConnectionFactory.CreateTransient();
             var context = new StudentHostelContext(connection);
-
             GroupListViewModel viewModel = new GroupListViewModel(context);
+
+            // Определяем текущее количество записей в таблице
             int count = viewModel.GroupList.Count;
+
             viewModel.AddCommand.Execute("");
             viewModel.CurrentGroup = new GroupViewModel { GroupId = 0, GroupName = "Test" };
             viewModel.SaveCommand.Execute("");
 
+            // Получаем добавленную запись
             var group = context.Groups.Where(p => p.GroupId == count + 1).FirstOrDefault();
 
+            // Проверяем, что количество записей в таблице увеличилось на 1
             Assert.AreEqual(count + 1, context.Groups.Count());
             Assert.AreEqual(count+1, viewModel.GroupList.Count);
-
+            // Проверяем поле GroupId новой записи 
             Assert.AreEqual(count+1, group.GroupId);
             Assert.AreEqual(count + 1, viewModel.GroupList[count].GroupId);
-
+            // Проверяем поле GroupName новой записи
             Assert.AreEqual("Test", group.GroupName);
             Assert.AreEqual("Test", viewModel.GroupList[count].GroupName);
         }
@@ -124,7 +128,6 @@ namespace UnitTestStudentHostel
         {
             var connection = DbConnectionFactory.CreateTransient();
             var context = new StudentHostelContext(connection);
-
             GroupListViewModel viewModel = new GroupListViewModel(context);
             
             viewModel.CurrentGroup = viewModel.GroupList.Where(p => p.GroupId == 1).FirstOrDefault();
@@ -132,11 +135,70 @@ namespace UnitTestStudentHostel
             viewModel.CurrentGroup.GroupName = "NewName";
             viewModel.SaveCommand.Execute("");
 
+            // Получаем измененную запись
             Group group = context.Groups.Where(p => p.GroupId == 1).FirstOrDefault();
 
+            // Проверяем, что поле GroupName изменено
             Assert.AreEqual("NewName", group.GroupName);
             Assert.AreEqual("NewName", viewModel.CurrentGroup.GroupName);
             Assert.AreEqual("NewName", viewModel.GroupList[0].GroupName);
+        }
+
+        /// <summary>
+        /// Выполняет проверку удаления неиспользуемой записи из таблицы Groups
+        /// </summary>
+        [TestMethod]
+        public void DeleteGroupEffort()
+        {
+            var connection = DbConnectionFactory.CreateTransient();
+            var context = new StudentHostelContext(connection);
+            GroupListViewModel viewModel = new GroupListViewModel(context);
+
+            // Определяем текущее количество записей в таблице
+            int count = context.Groups.Where(p=>!p.SoftDeleted).Count();
+
+            // Выбираем группу, в которой нет студентов
+            viewModel.CurrentGroup = viewModel.GroupList.Where(p => p.GroupId == 3).FirstOrDefault();
+
+            viewModel.DeleteCommand.Execute("");
+
+            // Проверяем, что количество записей стало меньше на 1
+            Assert.AreEqual(count - 1, context.Groups.Where(p=>!p.SoftDeleted).Count());
+            Assert.AreEqual(count - 1, viewModel.GroupList.Count());
+            // Проверяем, что записи больше нет в списке представления модели
+            Assert.AreEqual(null, viewModel.GroupList.Where(p => p.GroupId == 3).FirstOrDefault());
+            // Проверяем, что в таблице запись помечена как удаленная
+            Assert.AreEqual(true, context.Groups.Where(p => p.GroupId == 3).Select(p => p.SoftDeleted).FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Выполняет проверку удаления группы, в которой числятся 
+        /// проживающие студенты
+        /// </summary>
+        [TestMethod]
+        public void CannotDeleteGroup()
+        {
+            var connection = DbConnectionFactory.CreateTransient();
+            var context = new StudentHostelContext(connection);
+
+            GroupListViewModel viewModel = new GroupListViewModel(context);
+
+            // Определяем текущее количество записей в таблице
+            int count = context.Groups.Where(p => !p.SoftDeleted).Count();
+
+            // Выбираем группу, в которой числятся студенты
+            viewModel.CurrentGroup = viewModel.GroupList.Where(p => p.GroupId == 2).FirstOrDefault();
+
+            viewModel.DeleteCommand.Execute("");
+
+            // Проверяем, что количество записей не изменилось
+            Assert.AreEqual(count, context.Groups.Where(p => !p.SoftDeleted).Count());
+            Assert.AreEqual(count, viewModel.GroupList.Count);
+            // Проверяем, что запись не удалилась
+            Assert.AreNotEqual(null, viewModel.GroupList.Where(p => p.GroupId == 2).FirstOrDefault());
+            Assert.AreNotEqual(null, context.Groups.Where(p => p.GroupId == 2 && !p.SoftDeleted).FirstOrDefault());
+            // Проверяем, что сообщение об ошибке появилось
+            Assert.AreEqual("Невозможно удалить информацию о группе, в которой числятся проживающие студенты!", viewModel.ErrorMessage);
         }
     }
 }
