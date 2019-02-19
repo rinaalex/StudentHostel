@@ -57,7 +57,7 @@ namespace StudentHostelApp.DataAccess
                     StudentId = 4,
                     Name = "Викторов Виктор Евгеньевич",
                     Phone = "89990001333",
-                    Group = groups.Where(p=>p.GroupId==3).FirstOrDefault(),
+                    Group = groups.Where(p=>p.GroupId==2).FirstOrDefault(),
                     Description = "Тестовая запись",
                     SoftDeleted = false
                 }
