@@ -195,7 +195,6 @@ namespace StudentHostelApp.ViewModel
                     int count = students.Count();
                     if (count == 0)
                     {
-
                         var group = context.Groups.Where(p => p.GroupId == CurrentGroup.GroupId).FirstOrDefault();
                         GroupList.Remove(CurrentGroup);
                         group.SoftDeleted = true;
