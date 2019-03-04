@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
-        mc:Ignorable="d"
-        Title="Список размещений" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
-    <Grid>
+        mc:Ignorable="d" Width="1024" Height="600" WindowStartupLocation="CenterScreen"
+        Title="Список размещений" Closing="Window_Closing">
+    <Grid Style="{StaticResource GridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
@@ -29,31 +29,35 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+        <StackPanel Grid.Column="0" Grid.Row="1" >
+            <TextBlock Text="Студент:" Style="{StaticResource LabelStyle}"/>
             <ComboBox ItemsSource="{Binding StudentsList}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="StudentId"
                       SelectedValue="{Binding CurrentAccomodation.StudentId, UpdateSourceTrigger=PropertyChanged}"
                       IsEnabled="{Binding IsAdding}"
                       Style="{StaticResource ComboBoxStyle}"/>
+            <TextBlock Text="Комната:" Style="{StaticResource LabelStyle}"/>
             <ComboBox ItemsSource="{Binding RoomsList}"
                       DisplayMemberPath="RoomNo"
                       SelectedValuePath="RoomId"
                       SelectedValue="{Binding CurrentAccomodation.RoomId, UpdateSourceTrigger=PropertyChanged}"
                       IsEnabled="{Binding IsAdding}"
                       Style="{StaticResource ComboBoxStyle}"/>
+            <TextBlock Text="Дата заселения:" Style="{StaticResource LabelStyle}"/>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateStart, Mode=TwoWay}"
                         IsEnabled="{Binding IsAdding}" Style="{StaticResource DatePickerStyle}"/>
+            <TextBlock Text="Дата выселения:" Style="{StaticResource LabelStyle}"/>
             <DatePicker SelectedDate="{Binding CurrentAccomodation.DateEnd, Mode=TwoWay}"
                         IsEnabled="{Binding IsEditing}" Style="{StaticResource DatePickerStyle}"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+        <WrapPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
             <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
-            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"/>
-        </StackPanel>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
+        </WrapPanel>
 
     </Grid>
 </Window>

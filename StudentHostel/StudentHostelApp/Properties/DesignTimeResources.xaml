@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:StudentHostelApp.Properties">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/StudentHostelApp;component/View/MainTheme.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

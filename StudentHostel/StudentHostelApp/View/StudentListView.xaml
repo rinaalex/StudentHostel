@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
-        mc:Ignorable="d"
-        Title="Список студентов" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
-    <Grid>
+        mc:Ignorable="d" Width="1024" Height="600" WindowStartupLocation="CenterScreen"
+        Title="Список студентов" Closing="Window_Closing">
+    <Grid Style="{StaticResource GridStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
@@ -28,17 +28,17 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
-            <TextBlock TextWrapping="Wrap" Text="ФИО:" Style="{StaticResource TextBlockStyle}"/>
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="10">
+            <TextBlock TextWrapping="Wrap" Text="ФИО:" Style="{StaticResource LabelStyle}"/>
             <TextBox Text="{Binding CurrentStudent.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource TextBoxStyle}"/>
-            <TextBlock TextWrapping="Wrap" Text="Телефон:" Style="{StaticResource TextBlockStyle}"/>
+                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource InputStyle}"/>
+            <TextBlock TextWrapping="Wrap" Text="Телефон:" Style="{StaticResource LabelStyle}"/>
             <TextBox TextWrapping="Wrap" Text="{Binding CurrentStudent.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource TextBoxStyle}"/>
-            <TextBlock TextWrapping="Wrap" Text="Комментарий:" Style="{StaticResource TextBlockStyle}"/>
+                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource InputStyle}"/>
+            <TextBlock TextWrapping="Wrap" Text="Комментарий:" Style="{StaticResource LabelStyle}"/>
             <TextBox TextWrapping="Wrap" Text="{Binding CurrentStudent.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource TextBoxStyle}"/>
-            <TextBlock TextWrapping="Wrap" Text="Учебная группа:" Style="{StaticResource TextBlockStyle}"/>
+                     IsEnabled="{Binding IsAddingOrEditing}" Style="{StaticResource InputStyle}"/>
+            <TextBlock TextWrapping="Wrap" Text="Учебная группа:" Style="{StaticResource LabelStyle}"/>
             <ComboBox 
                   ItemsSource="{Binding GroupList}" 
                   DisplayMemberPath="GroupName" 
@@ -49,13 +49,13 @@
             />
         </StackPanel>
         
-        <StackPanel Grid.Column="1" Grid.Row="1" Style="{StaticResource StackPanelStyle}">
+        <WrapPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="10">
             <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"/>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
-            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"/>
-        </StackPanel>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
+        </WrapPanel>
     </Grid>
 </Window>

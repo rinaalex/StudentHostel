@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="Студенты" HorizontalAlignment="Left" Height="29" Margin="77,97,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click"/>
-        <Button Content="Учебные группы" HorizontalAlignment="Left" Margin="77,166,0,0" VerticalAlignment="Top" Width="153" Height="29" Click="Button_Click_1"/>
-        <Button Content="Расселение" HorizontalAlignment="Left" Margin="77,238,0,0" VerticalAlignment="Top" Width="153" Height="29" Click="Button_Click_2"/>
-        <Button Content="Комнаты" HorizontalAlignment="Left" Margin="77,318,0,0" VerticalAlignment="Top" Width="153" Height="29" Click="Button_Click_3"/>
-
+        Title="Student Hostel" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Style="{StaticResource GridStyle}">
+        <WrapPanel Orientation="Horizontal">
+            <Button Content="Студенты" Click="Button_Click" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Учебные группы" Click="Button_Click_1" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Расселение" Click="Button_Click_2" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Комнаты" Click="Button_Click_3" Style="{StaticResource ButtonStyle}"/>
+        </WrapPanel>
     </Grid>
 </Window>

@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentHostelApp.View"
-        mc:Ignorable="d"
-        Title="Список учебных групп" Style="{StaticResource WindowStyle}" Closing="Window_Closing">
-    <Grid>
+        mc:Ignorable="d" Width="1024" Height="600" WindowStartupLocation="CenterScreen"
+        Title="Список учебных групп" Closing="Window_Closing">
+    <Grid Style="{StaticResource GridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
@@ -26,17 +26,19 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Column="1" Grid.Row="0" Style="{StaticResource StackPanelStyle}">
-            <TextBlock Text="Название учебной группы:" Style="{StaticResource TextBlockStyle}"></TextBlock>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock Text="Название учебной группы:" Style="{StaticResource LabelStyle}"></TextBlock>
             <TextBox Text="{Binding CurrentGroup.GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      IsEnabled="{Binding IsAddingOrEditing}"
-                     Style="{StaticResource TextBoxStyle}"></TextBox>
-            <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"></Button>
-            <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"></Button>
-            <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"></Button>
-            <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"></Button>
-            <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"></Button>
-            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorTextBlockStyle}"></TextBlock>
+                     Style="{StaticResource InputStyle}"></TextBox>
+            <WrapPanel Orientation="Horizontal">
+                <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"></Button>
+                <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"></Button>
+                <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"></Button>
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"></Button>
+                <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"></Button>
+                <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"></TextBlock>
+            </WrapPanel>
         </StackPanel>
     </Grid>
 </Window>
