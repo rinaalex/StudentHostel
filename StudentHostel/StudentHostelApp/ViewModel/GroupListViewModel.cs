@@ -116,27 +116,27 @@ namespace StudentHostelApp.ViewModel
         /// <param name="group">Проверяемый объект</param>
         /// <returns></returns>
         private bool Validate(GroupViewModel group)
-        {
+        {            
             if (string.IsNullOrEmpty(group.GroupName))
             {
                 ErrorMessage = "Название учебной группы не может быть пустым!";
                 return false;               
             }
-            else if(IsEditing && oldGroup.GroupName != CurrentGroup.GroupName && context.Groups.Where(p => p.GroupName == group.GroupName).FirstOrDefault()!=null)
+            if (IsAdding || (IsEditing && oldGroup.GroupName != CurrentGroup.GroupName))
             {
-                ErrorMessage = "Группа с таким названием уже существует!";
-                return false;
+                if (context.Groups.Where(p => p.GroupName == group.GroupName).FirstOrDefault() != null)
+                {
+                    ErrorMessage = "Группа с таким названием уже существует!";
+                    return false;
+                }
             }
-            else if(group.GroupName.Length>10)
+            if (group.GroupName.Length>10)
             {
                 ErrorMessage = "Название учебной группы не должно превышать 10 символов!";
                 return false;
             }
-            else
-            {
-                ErrorMessage = string.Empty;
-                return true;
-            }
+            ErrorMessage = string.Empty;
+            return true;
         }
 
         protected override void SaveChanges()
