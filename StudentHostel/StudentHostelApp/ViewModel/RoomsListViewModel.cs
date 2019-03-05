@@ -145,7 +145,12 @@ namespace StudentHostelApp.ViewModel
                 return false;
             }
             if (IsAdding)
-            {                
+            {
+                if (context.Rooms.Where(p => p.RoomNumber == CurrentRoom.RoomNo).FirstOrDefault() != null)
+                {
+                    ErrorMessage = "Комната с таким номером уже существует!";
+                    return false;
+                }
                 if (room.Seats <= 0)
                 {
                     ErrorMessage = "Поле Вместимость должно иметь положительное значение!";
@@ -154,6 +159,14 @@ namespace StudentHostelApp.ViewModel
             }
             if (IsEditing)
             {
+                if(oldRoom.RoomNo!=CurrentRoom.RoomNo)
+                {
+                    if(context.Rooms.Where(p=>p.RoomNumber==CurrentRoom.RoomNo).FirstOrDefault()!=null)
+                    {
+                        ErrorMessage = "Комната с таким номером уже существует!";
+                        return false;
+                    }
+                }
                 if(room.Seats<oldRoom.Seats-oldRoom.FreeSeats)
                 {
                     ErrorMessage = "Вместимость не может быть меньше текущего количества проживающих!";
