@@ -120,6 +120,11 @@ namespace StudentHostelApp.ViewModel
             if (string.IsNullOrEmpty(group.GroupName))
             {
                 ErrorMessage = "Название учебной группы не может быть пустым!";
+                return false;               
+            }
+            else if(IsEditing && oldGroup.GroupName != CurrentGroup.GroupName && context.Groups.Where(p => p.GroupName == group.GroupName).FirstOrDefault()!=null)
+            {
+                ErrorMessage = "Группа с таким названием уже существует!";
                 return false;
             }
             else if(group.GroupName.Length>10)
