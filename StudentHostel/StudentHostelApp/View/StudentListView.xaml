@@ -55,7 +55,12 @@
             <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button x:Name="ImportBtn" Content="Импорт" Style="{StaticResource ButtonStyle}" Click="ImportBtn_Click"/>
+            <Button Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ButtonStyle}"/>
+
             <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
+
         </WrapPanel>
+        
     </Grid>
 </Window>

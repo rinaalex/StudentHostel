@@ -33,6 +33,9 @@ namespace StudentHostelApp.ViewModel
             }
         }
 
+        // Команды
+        public Command UpdateCommand { get; set; }
+
         // Конструктор представления модели
         public StudentListViewModel(StudentHostelContext context):base(context)
         {
@@ -58,6 +61,7 @@ namespace StudentHostelApp.ViewModel
             SaveCommand = new Command(SaveChanges, () => { return (IsAdding || IsEditing) && context != null; });
             DeleteCommand = new Command(Delete, () => { return !(IsAdding && !IsEditing) && context != null; });
             CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing) && context != null; });
+            UpdateCommand = new Command(Update, () => { return !(IsAdding || IsEditing) && context != null; });
         }
 
         /// <summary>
@@ -309,6 +313,15 @@ namespace StudentHostelApp.ViewModel
                 IsEditing = false;
             }
             ErrorMessage = string.Empty;
+        }
+
+        /// <summary>
+        /// Выполняет обновление списка студентов
+        /// </summary>
+        protected void Update()
+        {
+            GetData();
+            OnPropertyChanged(nameof(StudentList));
         }
         #endregion
     }

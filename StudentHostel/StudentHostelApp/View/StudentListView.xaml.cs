@@ -42,5 +42,11 @@ namespace StudentHostelApp.View
                 viewModel.DeleteCommand.Execute("");
             }
         }
+
+        private void ImportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StudentsImportView studentListExcelView = new StudentsImportView();
+            studentListExcelView.Show();
+        }
     }
 }

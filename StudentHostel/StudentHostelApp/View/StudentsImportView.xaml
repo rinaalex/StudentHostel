@@ -1,0 +1,38 @@
+﻿<Window x:Class="StudentHostelApp.View.StudentsImportView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentHostelApp.View"
+        mc:Ignorable="d"
+        Title="StudentListExcelView" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Style="{StaticResource GridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding StudentsList, Mode=OneWay}" Style="{StaticResource DataGridStyle}"
+                  Grid.Row="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="ФИО"/>
+                <DataGridTextColumn Binding="{Binding Phone}" Header="Телефон"/>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Описание"/>
+                <DataGridTextColumn Binding="{Binding GroupName}" Header="Учебная группа"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="1">
+        <WrapPanel Orientation="Horizontal">
+                <Button x:Name="ViewBtn" Content="Выбрать файл" Style="{StaticResource ButtonStyle}" Click="ViewBtn_Click"/>
+                <TextBox x:Name="FileNameTxt" Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputStyle}" IsReadOnly="True" />
+            </WrapPanel>
+            <WrapPanel Orientation="Horizontal">
+                <Button Content="Загрузить" Command="{Binding GetStudentsCommand}" Style="{StaticResource ButtonStyle}"></Button>
+                <Button Content="Сохранить в базу данных" Command="{Binding SaveStudentsCommand}" Style="{StaticResource ButtonStyle}"></Button>
+                <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+    
+
+</Window>
