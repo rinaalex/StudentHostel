@@ -35,6 +35,8 @@ namespace StudentHostelApp.ViewModel
 
         // Команды
         public Command UpdateCommand { get; set; }
+        public Command FilterCommand { get; set; }
+        public Command CancelFilterCommand { get; set; }
 
         // Конструктор представления модели
         public StudentListViewModel(StudentHostelContext context):base(context)
@@ -62,6 +64,8 @@ namespace StudentHostelApp.ViewModel
             DeleteCommand = new Command(Delete, () => { return !(IsAdding && !IsEditing) && context != null; });
             CancelCommand = new Command(DiscardChanges, () => { return (IsAdding || IsEditing) && context != null; });
             UpdateCommand = new Command(Update, () => { return !(IsAdding || IsEditing) && context != null; });
+            FilterCommand = new Command(Filter, () => { return IsBrowsing; });
+            CancelFilterCommand = new Command(CancelFilter, () => { return IsBrowsing; });
         }
 
         /// <summary>
@@ -83,6 +87,7 @@ namespace StudentHostelApp.ViewModel
                 }).ToList();
 
                 StudentList = new ObservableCollection<StudentViewModel>(students);
+                OnPropertyChanged(nameof(StudentList));
             }
             catch (Exception e)
             {
@@ -322,6 +327,58 @@ namespace StudentHostelApp.ViewModel
         {
             GetData();
             OnPropertyChanged(nameof(StudentList));
+        }
+        #endregion
+
+        #region Свойства и методы для фильтрации коллекции
+        //Искомое значение имени
+        private string filterByNameValue;
+        public string FilterByNameValue
+        {
+            get { return this.filterByNameValue; }
+            set { this.filterByNameValue = value; OnPropertyChanged(nameof(FilterByNameValue)); }
+        }
+        // Искомое значение учебной группы
+        private string filterByGroupNameValue;
+        public string FilterByGroupNameValue
+        {
+            get { return this.filterByGroupNameValue; }
+            set { this.filterByGroupNameValue = value; OnPropertyChanged(nameof(FilterByGroupNameValue)); }
+        }
+        /// <summary>
+        /// Выполняет отбор записей
+        /// </summary>
+        protected void Filter()
+        {
+            if (!string.IsNullOrEmpty(FilterByNameValue))
+            {
+                var students = StudentList.Where(p => p.Name == FilterByNameValue);
+                StudentList = new ObservableCollection<StudentViewModel>(students);
+            }
+            if (!string.IsNullOrEmpty(FilterByGroupNameValue))
+            {
+                var students = StudentList.Where(p => p.GroupName == FilterByGroupNameValue);
+                StudentList = new ObservableCollection<StudentViewModel>(students);
+            }
+            if(StudentList.Count==0)
+            {                
+                GetData();
+                ErrorMessage = "Нет записей, удовлетворяющих условию!";
+                return;
+            }
+            ErrorMessage = string.Empty;
+            OnPropertyChanged(nameof(StudentList));
+        }
+
+        /// <summary>
+        /// Выполняет отмену отбора записей
+        /// </summary>
+        protected void CancelFilter()
+        {
+            FilterByNameValue = string.Empty;
+            FilterByGroupNameValue = string.Empty;
+            ErrorMessage = string.Empty;
+            GetData();            
         }
         #endregion
     }

@@ -49,7 +49,8 @@
             />
         </StackPanel>
         
-        <WrapPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="10">
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
+            <WrapPanel Orientation="Horizontal">
             <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Изменить" Command="{Binding EditCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Content="Удалить" Click="DeleteButton_Click" IsEnabled="{Binding IsBrowsing}" Style="{StaticResource ButtonStyle}"/>
@@ -57,10 +58,24 @@
             <Button Content="Отменить" Command="{Binding CancelCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button x:Name="ImportBtn" Content="Импорт" Style="{StaticResource ButtonStyle}" Click="ImportBtn_Click"/>
             <Button Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ButtonStyle}"/>
-
             <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
-
-        </WrapPanel>
+            </WrapPanel>
+            <TextBlock Text="Отбор записей" Style="{StaticResource HeaderStyle}"></TextBlock>
+            <WrapPanel Orientation="Vertical">
+                <TextBlock Text="ФИО:" Style="{StaticResource LabelStyle}"/>
+                <TextBox Text="{Binding FilterByNameValue}" Style="{StaticResource InputStyle}" Width="200" IsEnabled="{Binding IsBrowsing}"/>
+                <TextBlock Text="Учебная группа" Style="{StaticResource LabelStyle}"/>
+                <ComboBox ItemsSource="{Binding GroupList}"
+                          DisplayMemberPath="GroupName"
+                          SelectedValuePath="GroupName"
+                          SelectedValue="{Binding FilterByGroupNameValue}"
+                          Width="200" Style="{StaticResource ComboBoxStyle}"/>                
+            </WrapPanel>
+            <WrapPanel>
+                <Button Content="Искать" Command="{Binding FilterCommand}" Style="{StaticResource ButtonStyle}"/>
+                <Button Content="Отменить" Command="{Binding CancelFilterCommand}" Style="{StaticResource ButtonStyle}"/>
+            </WrapPanel>
+        </StackPanel>
         
     </Grid>
 </Window>
