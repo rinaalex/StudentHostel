@@ -95,7 +95,7 @@ namespace StudentHostelApp.ViewModel
                     using (var workbook = new XLWorkbook(FileName))
                     {
                         var worksheet = workbook.Worksheets.Worksheet(1);
-                        for (int row = 1; ; row++)
+                        for (int row = 2; ; row++)
                         {
                             if (string.IsNullOrEmpty(worksheet.Cell(row, 1).GetValue<string>()))
                             {
