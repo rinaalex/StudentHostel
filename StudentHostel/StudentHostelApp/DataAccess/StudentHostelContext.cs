@@ -23,6 +23,7 @@ namespace StudentHostelApp.DataAccess
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Accomodation> Accomodations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

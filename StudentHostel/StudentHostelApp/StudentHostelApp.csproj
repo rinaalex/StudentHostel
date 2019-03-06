@@ -88,8 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Code\DataTypes.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="DataAccess\StudentHostelDbInitializer.cs" />
+    <Compile Include="DataAccess\UserInfo.cs" />
     <Compile Include="Migrations\201901221603054_UpdatedGroups.cs" />
     <Compile Include="Migrations\201901221603054_UpdatedGroups.Designer.cs">
       <DependentUpon>201901221603054_UpdatedGroups.cs</DependentUpon>
@@ -138,9 +140,19 @@
     <Compile Include="Migrations\201902130808482_AddedSoftDeletedStudent.Designer.cs">
       <DependentUpon>201902130808482_AddedSoftDeletedStudent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903060742123_AddedUsersEntiti.cs" />
+    <Compile Include="Migrations\201903060742123_AddedUsersEntiti.Designer.cs">
+      <DependentUpon>201903060742123_AddedUsersEntiti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903061246095_UpdatedUsersEntitity.cs" />
+    <Compile Include="Migrations\201903061246095_UpdatedUsersEntitity.Designer.cs">
+      <DependentUpon>201903061246095_UpdatedUsersEntitity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Accomodation.cs" />
     <Compile Include="Model\Room.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="ViewModel\AccomodationListViewModel.cs" />
+    <Compile Include="ViewModel\AutorizationViewModel.cs" />
     <Compile Include="ViewModel\RoomsListViewModel.cs" />
     <Compile Include="ViewModel\SingleEntityVM\AccomodationViewModel.cs" />
     <Compile Include="Code\BaseViewModel.cs" />
@@ -148,7 +160,11 @@
     <Compile Include="ViewModel\SingleEntityVM\GroupViewModel.cs" />
     <Compile Include="ViewModel\SingleEntityVM\RoomViewModel.cs" />
     <Compile Include="ViewModel\SingleEntityVM\StudentViewModel.cs" />
+    <Compile Include="ViewModel\SingleEntityVM\UserViewModel.cs" />
     <Compile Include="ViewModel\StudentsImportViewModel.cs" />
+    <Compile Include="View\AutorizationView.xaml.cs">
+      <DependentUpon>AutorizationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StudentsImportView.xaml.cs">
       <DependentUpon>StudentsImportView.xaml</DependentUpon>
     </Compile>
@@ -183,6 +199,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="View\AutorizationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\StudentsImportView.xaml">
       <SubType>Designer</SubType>
@@ -282,6 +302,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902130808482_AddedSoftDeletedStudent.resx">
       <DependentUpon>201902130808482_AddedSoftDeletedStudent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903060742123_AddedUsersEntiti.resx">
+      <DependentUpon>201903060742123_AddedUsersEntiti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903061246095_UpdatedUsersEntitity.resx">
+      <DependentUpon>201903061246095_UpdatedUsersEntitity.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

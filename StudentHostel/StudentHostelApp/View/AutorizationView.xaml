@@ -1,0 +1,21 @@
+﻿<Window x:Class="StudentHostelApp.View.AutorizationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentHostelApp.View"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Авторизация" Height="300" Width="500">
+    <Grid Style="{StaticResource GridStyle}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Необходимо выполнить вход в программу" Style="{StaticResource HeaderStyle}"/>
+            <TextBlock Text="Логин:" Style="{StaticResource LabelStyle}"/>
+            <TextBox Text="{Binding CurrentUser.Login}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Text="Пароль:" Style="{StaticResource LabelStyle}"/>
+            <TextBox Text="{Binding CurrentUser.Password}" Style="{StaticResource InputStyle}"/>
+            <Button x:Name="EnterBtn" Content="Вход" Style="{StaticResource ButtonStyle}" Click="EnterBtn_Click"/>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>
