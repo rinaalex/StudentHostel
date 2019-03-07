@@ -13,6 +13,14 @@ namespace StudentHostelApp.DataAccess
     {
         protected override void Seed(StudentHostelContext context)
         {
+            // Добавление учетных записей
+            List<User> users = new List<User>
+            {
+                new User() { UserId = 1, Login = "Admin", Password = "123456", Role = Code.DataTypes.Role.Admin },
+                new User() { UserId = 2, Login = "User", Password = "123456", Role = Code.DataTypes.Role.User }
+            };
+            context.Users.AddRange(users);
+
             // Добавление учебных групп
             List<Group> groups = new List<Group>
             {
