@@ -9,17 +9,10 @@ namespace StudentHostelApp.Commands
         private Action methodToExecute = null;
         private Func<bool> methodToDetectCanExecute = null;
 
-        private DispatcherTimer canExecuteChangedEventTimer = null;
-
         public Command(Action methodToExecute, Func<bool> methodToDetectCanExecute)
         {
             this.methodToExecute = methodToExecute;
             this.methodToDetectCanExecute = methodToDetectCanExecute;
-
-            this.canExecuteChangedEventTimer = new DispatcherTimer();
-            this.canExecuteChangedEventTimer.Tick += canExecuteChangedEventTimer_Tick;
-            this.canExecuteChangedEventTimer.Interval = new TimeSpan(0, 0, 1);
-            this.canExecuteChangedEventTimer.Start();
         }
 
         public void Execute(object parameter)
@@ -39,14 +32,10 @@ namespace StudentHostelApp.Commands
             }
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        void canExecuteChangedEventTimer_Tick(object sender, object e)
+        public event EventHandler CanExecuteChanged
         {
-            if (this.CanExecuteChanged != null)
-            {
-                this.CanExecuteChanged(this, EventArgs.Empty);
-            }
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
     }
 }

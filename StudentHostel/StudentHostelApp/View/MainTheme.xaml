@@ -71,4 +71,8 @@
         <Setter Property="Foreground" Value="IndianRed"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
+
+    <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="PasswordChar" Value="*"/>
+    </Style>
 </ResourceDictionary>
