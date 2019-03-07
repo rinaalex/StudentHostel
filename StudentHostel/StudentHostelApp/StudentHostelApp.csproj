@@ -89,7 +89,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Code\DataTypes.cs" />
+    <Compile Include="Code\IHavePassword.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="DataAccess\StudentHostelDbInitializer.cs" />
     <Compile Include="DataAccess\UserInfo.cs" />
     <Compile Include="Migrations\201901221603054_UpdatedGroups.cs" />

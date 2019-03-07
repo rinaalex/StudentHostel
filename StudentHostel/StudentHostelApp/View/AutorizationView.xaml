@@ -1,4 +1,5 @@
 ﻿<Window x:Class="StudentHostelApp.View.AutorizationView"
+        x:Name="AuthorizationView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,8 +13,8 @@
             <TextBlock Text="Логин:" Style="{StaticResource LabelStyle}"/>
             <TextBox Text="{Binding CurrentUser.Login}" Style="{StaticResource InputStyle}"/>
             <TextBlock Text="Пароль:" Style="{StaticResource LabelStyle}"/>
-            <TextBox Text="{Binding CurrentUser.Password}" Style="{StaticResource InputStyle}"/>
-            <Button x:Name="EnterBtn" Content="Вход" Style="{StaticResource ButtonStyle}" Click="EnterBtn_Click"/>
+            <PasswordBox x:Name="UserPassword"/>
+            <Button x:Name="Login" Content="Вход" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=AuthorizationView}" Style="{StaticResource ButtonStyle}"/>
             <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
         </StackPanel>
         

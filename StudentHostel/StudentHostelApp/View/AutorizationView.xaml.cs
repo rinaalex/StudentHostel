@@ -13,14 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using StudentHostelApp.ViewModel;
 using StudentHostelApp.DataAccess;
+using StudentHostelApp.Code;
 
 namespace StudentHostelApp.View
 {
     /// <summary>
     /// Логика взаимодействия для AutorizationView.xaml
     /// </summary>
-    public partial class AutorizationView : Window
+    public partial class AutorizationView : Window, IHavePassword
     {
+        public System.Security.SecureString Password
+        {
+            get { return UserPassword.SecurePassword; }
+        }
+
         private AutorizationViewModel viewModel;
         public AutorizationView()
         {
