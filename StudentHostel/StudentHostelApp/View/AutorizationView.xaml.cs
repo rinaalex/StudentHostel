@@ -35,6 +35,17 @@ namespace StudentHostelApp.View
             this.DataContext = viewModel;
         }
 
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.LoginCommand.Execute(this);
+            if (UserInfo.CurrentUser.RoleName=="Admin"|| UserInfo.CurrentUser.RoleName == "User")
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+        }
+
         //private void EnterBtn_Click(object sender, RoutedEventArgs e)
         //{
         //    viewModel.LoginCommand.Execute("");

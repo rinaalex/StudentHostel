@@ -14,7 +14,7 @@
             <TextBox Text="{Binding CurrentUser.Login}" Style="{StaticResource InputStyle}"/>
             <TextBlock Text="Пароль:" Style="{StaticResource LabelStyle}"/>
             <PasswordBox x:Name="UserPassword" Style="{StaticResource PasswordBoxStyle}"/>
-            <Button x:Name="Login" Content="Вход" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=AuthorizationView}" Style="{StaticResource ButtonStyle}"/>
+            <Button x:Name="Login" Content="Вход" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=AuthorizationView}" Style="{StaticResource ButtonStyle}" Click="Login_Click"/>
             <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorLabelStyle}"/>
         </StackPanel>
         
