@@ -35,15 +35,15 @@ namespace StudentHostelApp.View
             this.DataContext = viewModel;
         }
 
-        private void EnterBtn_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.AutorizationCommand.Execute("");
-            if (UserInfo.CurrentUser.RoleName!=null)
-            {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-        }
+        //private void EnterBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    viewModel.LoginCommand.Execute("");
+        //    if (UserInfo.CurrentUser.RoleName!=null)
+        //    {
+        //        MainWindow mainWindow = new MainWindow();
+        //        mainWindow.Show();
+        //        this.Close();
+        //    }
+        //}
     }
 }
