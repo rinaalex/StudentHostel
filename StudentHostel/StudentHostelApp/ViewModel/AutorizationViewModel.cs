@@ -90,10 +90,10 @@ namespace StudentHostelApp.ViewModel
         }
 
         /// <summary>
-        /// Выполняет дешифрование пароля
+        /// Преобразует защищенную строку в незащищенную
         /// </summary>
-        /// <param name="securePassword">Пароль</param>
-        /// <returns>Дешифрованный пароль</returns>
+        /// <param name="securePassword">Защищенный пароль</param>
+        /// <returns></returns>
         private string ConvertToUnsecureString(SecureString securePassword)
         {
             if (securePassword == null)
